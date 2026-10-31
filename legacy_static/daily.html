@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Today's Reason — for my Chellam</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#fbeee9;
+  --muted:rgba(251,238,233,.6);
+  --rose:#f4a6b8;
+  --rose-deep:#e07a97;
+  --gold:#f3cf8a;
+  --amber:#ffb877;
+  --glass:rgba(255,255,255,.055);
+  --glass-brd:rgba(255,255,255,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%;overflow-x:hidden}
+body{font-family:'Montserrat',sans-serif;color:var(--ink);background:#0e0710;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;position:relative;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(1100px 700px at 20% 10%,#4a1b2e 0%,transparent 60%),
+    radial-gradient(900px 600px at 85% 85%,#3a1424 0%,transparent 55%),
+    radial-gradient(700px 700px at 50% 50%,#2a1220 0%,transparent 62%),
+    linear-gradient(160deg,#160a14,#0e0710 72%);}
+#bg::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(600px 420px at 50% 42%,rgba(244,166,184,.10),transparent 70%);
+  animation:glow 8s ease-in-out infinite}
+@keyframes glow{0%,100%{opacity:.5}50%{opacity:1}}
+#embers{position:fixed;inset:0;z-index:-1;pointer-events:none}
+
+.date{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.34em;font-size:.66rem;color:var(--rose);margin-bottom:24px;text-align:center}
+
+.card{position:relative;max-width:560px;width:100%;border-radius:24px;padding:44px 34px 40px;text-align:center;
+  background:linear-gradient(165deg,rgba(255,255,255,.075),rgba(255,255,255,.02));
+  border:1px solid var(--glass-brd);box-shadow:0 40px 90px -40px rgba(0,0,0,.7);
+  animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(26px) scale(.98)}to{opacity:1;transform:none}}
+.card .cat{display:inline-block;font-family:'Montserrat';text-transform:uppercase;letter-spacing:.2em;font-size:.6rem;
+  color:var(--gold);padding:6px 14px;border:1px solid rgba(243,207,138,.35);border-radius:30px;margin-bottom:26px}
+.card .num{font-family:'Playfair Display';font-style:italic;font-size:.9rem;color:var(--muted);margin-bottom:14px}
+.card .text{font-family:'Cormorant Garamond';font-size:clamp(1.4rem,6vw,2rem);line-height:1.4;color:var(--ink)}
+.card .text .grad{background:linear-gradient(115deg,var(--rose),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.card .real-who{display:block;font-family:'Montserrat';text-transform:uppercase;letter-spacing:.16em;font-size:.58rem;color:var(--rose);margin-top:18px;opacity:.8}
+.card .sign{font-family:'Caveat';font-size:1.7rem;color:var(--gold);margin-top:26px}
+
+.foot{margin-top:30px;text-align:center;max-width:560px}
+.tomorrow{font-family:'Cormorant Garamond';font-style:italic;font-size:1.05rem;color:var(--muted);margin-bottom:8px}
+.streak{font-family:'Montserrat';font-size:.72rem;letter-spacing:.05em;color:var(--muted)}
+.streak b{color:var(--gold)}
+.peek{margin-top:22px;display:inline-block;font-family:'Montserrat';font-size:.8rem;letter-spacing:.02em;padding:11px 22px;border-radius:40px;
+  border:1px solid var(--glass-brd);background:var(--glass);color:var(--ink);cursor:pointer;transition:.25s;text-decoration:none}
+.peek:hover{transform:translateY(-3px);background:rgba(255,255,255,.1)}
+.links{margin-top:26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.links a{font-family:'Montserrat';font-size:.78rem;color:var(--muted);text-decoration:none;padding:9px 18px;border-radius:40px;border:1px solid var(--glass-brd);transition:.25s}
+.links a:hover{color:var(--ink);transform:translateY(-2px)}
+
+.afterdark-fab{position:fixed;right:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:7px;
+  font-family:'Montserrat';font-size:.74rem;padding:9px 15px;border-radius:40px;text-decoration:none;color:var(--muted);
+  background:rgba(20,10,20,.55);border:1px solid var(--glass-brd);opacity:.55;transition:.3s;backdrop-filter:blur(6px)}
+.afterdark-fab:hover{opacity:1;color:var(--rose);transform:translateY(-3px)}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="embers"></canvas>
+
+<div class="date" id="today"></div>
+
+<div class="card" id="card">
+  <span class="cat" id="cat">a reason</span>
+  <div class="num" id="num"></div>
+  <div class="text" id="text"></div>
+  <div class="sign" id="sign"></div>
+</div>
+
+<div class="foot">
+  <div class="tomorrow" id="tomorrow">come back tomorrow — there's a new one waiting 💌</div>
+  <div class="streak" id="streak"></div>
+  <button class="peek" id="peek">give me one more 🤍</button>
+  <div class="links">
+    <a href="index.html">← our world</a>
+    <a href="open-when.html">open when… letters</a>
+    <a href="constellation.html">our constellation</a>
+  </div>
+</div>
+
+<a class="afterdark-fab" href="after-dark.html" title="only for you">🌙 after dark</a>
+
+<script>
+/* embers */
+(function(){
+  const c=document.getElementById('embers'),x=c.getContext('2d');let w,h,p;
+  function rz(){w=c.width=innerWidth;h=c.height=innerHeight;
+    const n=Math.min(28,Math.floor(w/32));
+    p=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,r:.7+Math.random()*2.1,
+      vy:.15+Math.random()*.5,a:.1+Math.random()*.5,sw:Math.random()*6.28,
+      hue:Math.random()<.5?'244,166,184':'255,180,120'}));}
+  rz();addEventListener('resize',rz);
+  (function loop(){x.clearRect(0,0,w,h);
+    for(const e of p){e.y-=e.vy;e.sw+=.02;e.x+=Math.sin(e.sw)*.25;
+      if(e.y<-10){e.y=h+10;e.x=Math.random()*w;}
+      x.beginPath();x.arc(e.x,e.y,e.r,0,6.28);
+      x.fillStyle='rgba('+e.hue+','+e.a+')';x.shadowBlur=8;x.shadowColor='rgba('+e.hue+',.6)';x.fill();}
+    x.shadowBlur=0;requestAnimationFrame(loop);})();
+})();
+
+/* ==== the daily pool: reasons, real lines, little notes ==== */
+/* cat: 'reason' | 'real-him' | 'real-her' | 'note' */
+const POOL=[
+  {cat:'reason', t:"Your smile is still my favorite sight in the entire world."},
+  {cat:'reason', t:"You have the kindest heart I've ever been trusted with."},
+  {cat:'reason', t:"Just thinking about you makes my hardest days feel easy."},
+  {cat:'reason', t:"I love the way you laugh at my silly jokes, even the bad ones."},
+  {cat:'reason', t:"Every song on the radio somehow sounds like it's about you."},
+  {cat:'reason', t:"You're my safe place, my calm, and my favorite adventure."},
+  {cat:'reason', t:"The whole world is brighter simply because you're in it."},
+  {cat:'reason', t:"I fall for you all over again, every single day."},
+  {cat:'reason', t:"You make me want to be the best version of myself, for you."},
+  {cat:'reason', t:"I love every one of your perfect imperfections, Chellam."},
+  {cat:'reason', t:"Wherever I go, my heart always finds its way back to you."},
+  {cat:'reason', t:"You are the best thing that has ever been mine."},
+  {cat:'reason', t:"I love how gently you treat everyone around you."},
+  {cat:'reason', t:"My favorite place on earth is standing right next to you."},
+  {cat:'reason', t:"You are my dream come true — today and for all my tomorrows."},
+  {cat:'reason', t:"The way you say Thangam when you're half asleep undoes me."},
+  {cat:'reason', t:"You made a boy who counts everything stop counting reasons to leave."},
+  {cat:'reason', t:"Even our arguments feel like home, because they're with you."},
+  {cat:'reason', t:"You turned ordinary Tuesdays into days I look forward to."},
+  {cat:'reason', t:"I never run out of things to tell you — 93,000 messages and counting."},
+  {cat:'reason', t:"July 12, 2025 — the day our eyes first met at the Chennai station, and my whole world turned golden."},
+  {cat:'reason', t:"September 6 — stepping into your home for the first time and seeing your smile there."},
+  {cat:'reason', t:"September 19 — having you walk into my home for the first time, bringing so much warmth with you."},
+  {cat:'real-her', t:"Luv u kuda solala", note:"the first time you almost said it — April 7"},
+  {cat:'real-her', t:"Naa full ah trust panra unna", note:"the day you gave me your whole heart"},
+  {cat:'real-her', t:"Kadhal nu illa oru nalla feel", note:"you calling it a good feeling"},
+  {cat:'real-her', t:"Ipo la unna konjitae irukanum nu thonuthu da 🫂", note:"June 1, and I felt it too"},
+  {cat:'real-her', t:"Luv u too ngaa 🫂😚", note:"still my favorite three words"},
+  {cat:'real-him', t:"Ne epo enna kuptalum na varuven, unakaga na irupen", note:"my promise — April 15"},
+  {cat:'real-him', t:"I love you the core 😘🫂", note:"from the deepest part of me"},
+  {cat:'real-him', t:"Una kathalecha en manasu ku savu illa de en kanmani", note:"loving you keeps me alive"},
+  {cat:'real-him', t:"Ne epude iruthalum na una kadhal leypa", note:"wherever you are, I love you"},
+  {cat:'note', t:"Whatever today looks like — you're not doing it alone. I'm right here."},
+  {cat:'note', t:"Drink some water, breathe once for me, and remember you're deeply loved."},
+  {cat:'note', t:"If today is hard, borrow my strength. I have plenty for both of us."},
+  {cat:'note', t:"You don't have to earn my love today. You already have all of it."},
+  {cat:'note', t:"Somewhere right now, I'm thinking about you. It's probably right now."}
+];
+
+const CAT_LABEL={reason:'reason i love you', 'real-him':'something i said', 'real-her':'something you said', note:'a little note'};
+
+/* deterministic day index so the card is stable all day, different each day */
+function dayNumber(d){
+  const start=new Date(2026,2,24); // Mar 24 2026, day 1 of "us"
+  return Math.floor((d - start)/86400000);
+}
+function pickFor(dayIdx){
+  // simple LCG hash so consecutive days don't repeat category patterns
+  let h=(dayIdx*2654435761)>>>0;
+  return POOL[h % POOL.length];
+}
+
+const now=new Date();
+const dayIdx=Math.max(0,dayNumber(now));
+document.getElementById('today').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+function render(item, counter){
+  const cat=document.getElementById('cat');
+  const num=document.getElementById('num');
+  const text=document.getElementById('text');
+  const sign=document.getElementById('sign');
+  cat.textContent=CAT_LABEL[item.cat]||'a reason';
+  const card=document.getElementById('card');
+  card.style.animation='none';void card.offsetWidth;card.style.animation='rise .7s cubic-bezier(.2,.8,.2,1) both';
+  if(item.cat==='reason'){
+    num.textContent='reason #'+(counter);
+    text.innerHTML='<span class="grad">'+esc(item.t)+'</span>';
+    sign.textContent='';
+  }else if(item.cat==='note'){
+    num.textContent='';
+    text.innerHTML=esc(item.t);
+    sign.textContent='— your Thangam';
+  }else{
+    num.textContent=item.note?esc(item.note):'';
+    const who=item.cat==='real-her'?'you once said':'I once said';
+    text.innerHTML='"<span class="grad">'+esc(item.t)+'</span>"<span class="real-who">'+who+'</span>';
+    sign.textContent='';
+  }
+}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+/* today's card */
+const todayItem=pickFor(dayIdx);
+render(todayItem, dayIdx+1);
+document.getElementById('streak').innerHTML='day <b>'+(dayIdx+1)+'</b> of loving you — and this gift never runs out';
+
+/* "one more" peek — random, playful, doesn't change today's */
+document.getElementById('peek').addEventListener('click',()=>{
+  const r=POOL[Math.floor(Math.random()*POOL.length)];
+  render(r, Math.floor(Math.random()*300)+1);
+  document.getElementById('tomorrow').textContent='(that was a sneak peek 🤫 — your real one for today is up top when you refresh)';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Shalini's Wonderland - A Universe Built for You</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico">
+    <link rel="preload" href="assets/hug-couple.png" as="image">
+</head>
+<body>
+    <!-- Canvas Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- 2. Main Navigation Header (Floating Glass Pill) -->
+    <nav class="navbar glass">
+        <ul class="nav-links">
+            <li><a href="#home-section" class="active">Us</a></li>
+            <li><a href="#journey-section">Our Numbers</a></li>
+            <li><a href="#timeline-section">Our Story</a></li>
+            <li><a href="#letters-section">Letters</a></li>
+            <li><a href="#romance-section">Love Nest</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button id="music-toggle" class="btn-icon" title="Toggle Background Music">
+                <span class="music-note-icon">🎵</span>
+            </button>
+            <button id="admin-trigger" class="btn-icon" title="Configure Universe">
+                <span class="settings-icon">⚙️</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="content-container">
+
+        <!-- 3. Home / Countdown Section -->
+        <section id="home-section" class="scroll-section active-section">
+            <div class="hero-container">
+                <div class="hero-text-card glass animate-fade-in">
+                    <h2 class="dynamic-greeting" id="greeting">Hello, Beautiful</h2>
+                    <h1 class="love-heading">Welcome to <span class="highlight">Our Tiny Universe</span></h1>
+                    <p class="love-quote">"If I had a flower for every time I thought of you... I could walk through my garden forever."</p>
+                </div>
+
+                <!-- Secret Love Note — one message per calendar day -->
+                <div class="daily-note-card glass animate-slide-up">
+                    <div class="daily-note-header">
+                        <span class="daily-note-badge">💌 Secret Love Note</span>
+                        <span class="daily-note-date" id="daily-note-date"></span>
+                    </div>
+                    <p class="daily-note-message" id="daily-note-message">Loading today's whisper...</p>
+                    <p class="daily-note-footer">A new message unlocks at midnight ✨</p>
+                </div>
+                
+                <!-- Live Counter Widget -->
+                <div class="counter-card glass animate-slide-up">
+                    <h3 class="counter-title">Days of Loving Shalini</h3>
+                    <div class="counter-grid">
+                        <div class="counter-item">
+                            <span class="counter-number" id="days">000</span>
+                            <span class="counter-label">Days</span>
+                        </div>
+                        <div class="counter-item">
+                            <span class="counter-number" id="hours">00</span>
+                            <span class="counter-label">Hours</span>
+                        </div>
+                        <div class="counter-item">
+                            <span class="counter-number" id="minutes">00</span>
+                            <span class="counter-label">Mins</span>
+                        </div>
+                        <div class="counter-item">
+                            <span class="counter-number" id="seconds">00</span>
+                            <span class="counter-label">Secs</span>
+                        </div>
+                    </div>
+                    <div class="counter-footer" id="anniversary-date-display">Since March 24, 2026</div>
+                </div>
+
+                <!-- Love-letter experience CTA -->
+                <a href="our-words.html" class="words-cta glass">
+                    <span class="words-cta-heart">🖤</span>
+                    <div class="words-cta-text">
+                        <span class="words-cta-title">For my Chellam — the words we said</span>
+                        <span class="words-cta-sub">Every line, real. Yours &amp; mine. Tap to read slowly. 🫂</span>
+                    </div>
+                    <span class="words-cta-arrow">→</span>
+                </a>
+
+                <!-- Open When… letters -->
+                <a href="open-when.html" class="words-cta glass">
+                    <span class="words-cta-heart">💌</span>
+                    <div class="words-cta-text">
+                        <span class="words-cta-title">Open When… — letters for every kind of day</span>
+                        <span class="words-cta-sub">Sad, sleepless, missing me, mad at me. Open the one that fits. 🫂</span>
+                    </div>
+                    <span class="words-cta-arrow">→</span>
+                </a>
+
+                <!-- Memory constellation -->
+                <a href="constellation.html" class="words-cta glass">
+                    <span class="words-cta-heart">✨</span>
+                    <div class="words-cta-text">
+                        <span class="words-cta-title">Our Constellation — a whole sky of us</span>
+                        <span class="words-cta-sub">Every star is one of our real days. Tap them all to light it up. 🌌</span>
+                    </div>
+                    <span class="words-cta-arrow">→</span>
+                </a>
+
+                <!-- Daily surprise -->
+                <a href="daily.html" class="words-cta glass">
+                    <span class="words-cta-heart">🌅</span>
+                    <div class="words-cta-text">
+                        <span class="words-cta-title">Today's Reason — a new one every day</span>
+                        <span class="words-cta-sub">One reason, memory, or note each morning. It never runs out. 🤍</span>
+                    </div>
+                    <span class="words-cta-arrow">→</span>
+                </a>
+
+                <!-- Time capsule -->
+                <a href="time-capsule.html" class="words-cta glass">
+                    <span class="words-cta-heart">⏳</span>
+                    <div class="words-cta-text">
+                        <span class="words-cta-title">Our Time Capsule — letters from future me</span>
+                        <span class="words-cta-sub">Locked until their day: your birthday, our 1-year, 1000 days. ⏳</span>
+                    </div>
+                    <span class="words-cta-arrow">→</span>
+                </a>
+            </div>
+        </section>
+
+
+
+        <!-- 4. Our Story in Numbers (from our real chats) -->
+        <section id="journey-section" class="scroll-section">
+            <div class="section-header">
+                <h2 class="section-title">Our Story in Numbers</h2>
+                <div class="section-line"></div>
+                <p class="section-desc">Every one of these is real — pulled straight from our chats. This is us, measured in messages, laughs, and late nights.</p>
+            </div>
+
+            <div class="journey-intro glass">
+                <p class="journey-intro-text">It all began with a single <span class="highlight">"Hi"</span> from you on <strong id="journey-first-date">October 5, 2024</strong>. Look how far we've come since then. 💫</p>
+            </div>
+
+            <div class="stats-grid" id="stats-grid">
+                <!-- Stat cards injected by JS -->
+            </div>
+
+            <!-- Who texts more -->
+            <div class="stats-compare glass">
+                <h3 class="stats-compare-title">Who can't stop texting? 💬</h3>
+                <div class="compare-row">
+                    <div class="compare-label"><span id="compare-her-name">Shalini</span></div>
+                    <div class="compare-track"><div class="compare-fill compare-her" id="compare-her-fill"></div></div>
+                    <div class="compare-value" id="compare-her-val">0</div>
+                </div>
+                <div class="compare-row">
+                    <div class="compare-label"><span id="compare-him-name">Polonium</span></div>
+                    <div class="compare-track"><div class="compare-fill compare-him" id="compare-him-fill"></div></div>
+                    <div class="compare-value" id="compare-him-val">0</div>
+                </div>
+                <p class="stats-compare-note" id="compare-note"></p>
+            </div>
+
+            <!-- 2026 journey bar chart -->
+            <div class="stats-chart glass">
+                <h3 class="stats-compare-title">How 2026 became our year 📈</h3>
+                <p class="card-inner-desc text-center" style="max-width:520px;margin:0 auto 22px;">Messages per month — watch the moment we fell all the way in.</p>
+                <div class="chart-bars" id="chart-bars">
+                    <!-- Bars injected by JS -->
+                </div>
+            </div>
+
+            <!-- Highlight -->
+            <div class="journey-highlight glass">
+                <span class="journey-highlight-emoji">😮</span>
+                <div>
+                    <div class="journey-highlight-big"><span id="busiest-count">3,084</span> messages</div>
+                    <div class="journey-highlight-sub">in a single day — <strong>May 14, 2026</strong>, our most unstoppable day ever.</div>
+                </div>
+            </div>
+
+            <!-- Cinematic wrapped experience CTA -->
+            <a href="our-wrapped.html" class="wrapped-cta glass">
+                <span class="wrapped-cta-spark">✨</span>
+                <div class="wrapped-cta-text">
+                    <span class="wrapped-cta-title">Us, in Numbers — the full story</span>
+                    <span class="wrapped-cta-sub">A little something I made just for you. Tap to watch. 🫂</span>
+                </div>
+                <span class="wrapped-cta-arrow">→</span>
+            </a>
+        </section>
+
+        <!-- 5. Memories Timeline Section -->
+        <section id="timeline-section" class="scroll-section">
+            <div class="section-header">
+                <h2 class="section-title">Our Magical Journey</h2>
+                <div class="section-line"></div>
+                <p class="section-desc">Every moment with you is a favorite memory. Hover or tap each to view details.</p>
+            </div>
+
+            <!-- Words I'll Never Forget — real lines from our chats -->
+            <div class="memory-quotes-wrap">
+                <h3 class="memory-quotes-heading">Words I'll Never Forget 💌</h3>
+                <p class="memory-quotes-sub">Real lines from our chats — exactly the way we said them.</p>
+                <div class="memory-quote-stage">
+                    <button type="button" class="memory-arrow memory-arrow-prev" id="memory-quote-prev" aria-label="Previous memory">&#8249;</button>
+                    <div class="memory-quote-card glass" id="memory-quote-card">
+                        <span class="memory-quote-mark">&ldquo;</span>
+                        <p class="memory-quote-text" id="memory-quote-text">Loading our words...</p>
+                        <div class="memory-quote-meta">
+                            <span class="memory-quote-who" id="memory-quote-who"></span>
+                            <span class="memory-quote-dot-sep">·</span>
+                            <span class="memory-quote-date" id="memory-quote-date"></span>
+                        </div>
+                    </div>
+                    <button type="button" class="memory-arrow memory-arrow-next" id="memory-quote-next" aria-label="Next memory">&#8250;</button>
+                </div>
+                <div class="memory-quote-dots" id="memory-quote-dots"></div>
+            </div>
+
+            <!-- Horizontal / Vertical Timeline Wrapper -->
+            <div class="timeline-container" id="timeline-container">
+                <!-- Dynamically populated by JS -->
+            </div>
+        </section>
+
+        <!-- 6. Letters Archive Section -->
+        <section id="letters-section" class="scroll-section">
+            <div class="section-header">
+                <h2 class="section-title">The Sealed Letter Archive</h2>
+                <div class="section-line"></div>
+                <p class="section-desc">A quiet space containing personal handwritten scrolls. Tap any envelope below to unfold the magic.</p>
+            </div>
+
+            <!-- Love Letter Generator -->
+            <div class="letter-generator-card glass">
+                <h3 class="card-inner-title text-center">Love Letter Generator</h3>
+                <p class="card-inner-desc text-center generator-intro-desc">Pick a mood and I'll weave a one-of-a-kind letter just for you.</p>
+                <div class="generator-controls">
+                    <label for="letter-mood-select">Choose a mood / theme:</label>
+                    <select id="letter-mood-select" class="mood-select">
+                        <option value="romantic">💕 Deeply Romantic</option>
+                        <option value="playful">😊 Playful & Sweet</option>
+                        <option value="missing">🌙 Missing You</option>
+                        <option value="morning">☀️ Good Morning</option>
+                        <option value="apology">🌸 Gentle Apology</option>
+                        <option value="anniversary">🎉 Anniversary / Milestone</option>
+                        <option value="future">✨ Our Future Together</option>
+                        <option value="grateful">🙏 Grateful Heart</option>
+                    </select>
+                    <div class="generator-actions">
+                        <button type="button" class="btn-primary" id="generate-letter-btn">Generate Letter</button>
+                        <button type="button" class="btn-secondary" id="regenerate-letter-btn" hidden>Try Another</button>
+                    </div>
+                </div>
+                <div class="generated-letter-preview hidden" id="generated-letter-preview">
+                    <div class="generated-letter-paper" id="generated-letter-paper">
+                        <h4 class="generated-letter-title" id="generated-letter-title"></h4>
+                        <div class="generated-letter-body" id="generated-letter-body"></div>
+                        <p class="generated-letter-sign" id="generated-letter-sign"></p>
+                    </div>
+                    <button type="button" class="btn-secondary btn-print-letter" id="print-letter-btn">🖨️ Print / Save as PDF</button>
+                </div>
+            </div>
+
+            <div class="letters-archive-container glass text-center">
+                <div class="letter-archive-grid" id="archive-grid">
+                    <!-- Envelopes generated dynamically by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Love Nest Section (Origami Jar & Wish Board) -->
+        <section id="romance-section" class="scroll-section">
+            <div class="section-header">
+                <h2 class="section-title">The Love Nest</h2>
+                <div class="section-line"></div>
+                <p class="section-desc">Interactive keepsakes built for you. Shake the compliments jar or release a wish into the stars.</p>
+            </div>
+
+            <div class="romance-grid-single">
+                <!-- Virtual Hug Button -->
+                <div class="romance-card glass text-center hug-card">
+                    <h3 class="card-inner-title">Send a Virtual Hug</h3>
+                    <p class="card-inner-desc">Feeling the distance? Tap below — watch us come together in a warm embrace.</p>
+                    <button type="button" class="btn-hug" id="virtual-hug-btn" aria-label="Send a virtual hug">
+                        <span class="hug-icon">🤗</span>
+                        <span class="hug-label">Send Hug</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="romance-grid-single romance-grid-spaced">
+                <!-- B. Origami Compliment Jar -->
+                <div class="romance-card glass text-center">
+                    <h3 class="card-inner-title">The Sweet Compliments Jar</h3>
+                    <p class="card-inner-desc">Whenever you need a smile, tap the magical jar to open an origami scroll containing a reason why I love you.</p>
+                    
+                    <div class="jar-wrapper" id="jar-wrapper">
+                        <div class="jar-container" id="compliment-jar">
+                            <div class="jar-lid"></div>
+                            <div class="jar-body">
+                                <div class="jar-label">Shalini's Jar</div>
+                                <div class="jar-glow"></div>
+                                <div class="jar-sparkles" id="jar-sparkles-layer">
+                                    <!-- Tiny glowing sparks generated by JS -->
+                                </div>
+                                <!-- Floating papers inside -->
+                                <div class="paper-scroll roll-1"></div>
+                                <div class="paper-scroll roll-2"></div>
+                                <div class="paper-scroll roll-3"></div>
+                                <div class="paper-scroll roll-4"></div>
+                                <div class="paper-scroll roll-5"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Message Popup Area -->
+                    <div class="compliment-reveal-area" id="compliment-reveal">
+                        <div class="scroll-paper glass">
+                            <p id="compliment-text">Tap the jar to see your first compliment! ✨</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Starry Wish Board Overlay -->
+            <div class="wish-board-card glass text-center wish-board-spaced">
+                <h3 class="card-inner-title">🌟 The Starry Wish Board 🌟</h3>
+                <p class="card-inner-desc">Write down a wish, a dream, or a cute secret note. Click "Release Star" to watch it take flight into our dynamic night sky!</p>
+                <div class="wish-input-wrapper">
+                    <input type="text" id="wish-input" placeholder="Our dream vacation together..." maxlength="80">
+                    <button class="btn-primary" id="wish-submit-btn">Release Star</button>
+                </div>
+                <!-- Mini view of wishes -->
+                <div class="wishes-list" id="wishes-list">
+                    <!-- Inline list of active floating notes -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 8. Hidden Admin Panel Modal -->
+    <div class="modal-overlay" id="admin-modal">
+        <div class="modal-card glass">
+            <div class="modal-header">
+                <h2>Configure Shalini's Universe</h2>
+                <button class="btn-close" id="admin-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="admin-form">
+                    <!-- General Settings -->
+                    <div class="form-group">
+                        <label for="anniversary-date-input">Anniversary/Special Date:</label>
+                        <input type="datetime-local" id="anniversary-date-input" required>
+                        <small class="form-help">Sets the live count-up timer in the main lobby.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admin-email-input">Your Email for Wish Alerts:</label>
+                        <input type="email" id="admin-email-input" placeholder="e.g., yourname@email.com" value="polonium84r@gmail.com">
+                        <small class="form-help">Wishes released by Shalini will be emailed directly to this address.</small>
+                    </div>
+
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="boyfriend-name-input">Boyfriend's Name:</label>
+                            <input type="text" id="boyfriend-name-input" value="Polonium" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="girlfriend-name-input">Girlfriend's Name:</label>
+                            <input type="text" id="girlfriend-name-input" value="Shalini" required>
+                        </div>
+                    </div>
+
+                    <!-- Background Music Settings -->
+                    <div class="form-group">
+                        <label for="youtube-song-id-input">Background YouTube Song ID:</label>
+                        <input type="text" id="youtube-song-id-input" placeholder="e.g., T6Td7uJ8rRI" required>
+                        <small class="form-help">Enter a YouTube video ID or URL to set the default romantic song.</small>
+                    </div>
+
+                    <!-- Custom Letter -->
+                    <div class="form-group">
+                        <label for="love-letter-input">Custom Love Letter:</label>
+                        <textarea id="love-letter-input" rows="5" placeholder="Write a beautiful handwritten letter..."></textarea>
+                    </div>
+
+                    <!-- Milestones list -->
+                    <div class="form-group">
+                        <label>Edit Memories Timeline:</label>
+                        <div class="milestones-edit-container" id="milestones-editor">
+                            <!-- Milestone edit blocks injected by JS -->
+                        </div>
+                        <button type="button" class="btn-secondary btn-sm" id="add-milestone-btn" style="margin-top: 10px;">+ Add New Milestone</button>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" id="admin-reset-defaults">Reset Defaults</button>
+                        <button type="submit" class="btn-primary">Save Magical Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. Cursive Letter Modal Overlay -->
+    <div class="modal-overlay" id="letter-archive-modal">
+        <div class="letter-modal-card">
+            <!-- Opened Cursive Letter Parchment -->
+            <div class="parchment-letter animate-slide-up">
+                <button class="btn-close-letter" id="letter-close-btn">&times;</button>
+                <div class="parchment-wax-seal-bg">❤️</div>
+                <div class="letter-handwritten-content">
+                    <h4 class="handwritten-title" id="archive-letter-title">My Dearest Shalini,</h4>
+                    <div class="handwritten-body" id="archive-letter-body">
+                        <!-- Dynamic cursive content loaded by JS -->
+                    </div>
+                    <div class="handwritten-signature">
+                        Forever Yours,<br>
+                        <span class="signature-name" id="archive-letter-signature">Polonium</span>
+                    </div>
+                    <button type="button" class="btn-secondary btn-print-letter archive-print-btn" id="archive-print-btn">🖨️ Print / Save as PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Background YouTube Player -->
+    <div id="bg-music-container" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; overflow: hidden; left: -9999px;">
+        <iframe id="bg-youtube-iframe" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <!-- Virtual Hug overlay (pink pulse + hearts + couple hug) -->
+    <div class="hug-overlay" id="hug-overlay" aria-hidden="true"></div>
+    <div class="hug-hearts-layer" id="hug-hearts-layer" aria-hidden="true"></div>
+    <div class="hug-scene" id="hug-scene" aria-hidden="true" role="img" aria-label="A couple sharing a warm hug under city lights">
+        <div class="hug-cinematic">
+            <div class="hug-night-sky"></div>
+            <div class="hug-bokeh" id="hug-bokeh" aria-hidden="true"></div>
+            <div class="hug-vignette"></div>
+
+            <div class="hug-approach" aria-hidden="true">
+                <div class="hug-silhouette hug-silhouette-boy">
+                    <div class="hug-sil-head"></div>
+                    <div class="hug-sil-torso"></div>
+                </div>
+                <div class="hug-silhouette hug-silhouette-girl">
+                    <div class="hug-sil-head"></div>
+                    <div class="hug-sil-torso hug-sil-torso-girl"></div>
+                </div>
+            </div>
+
+            <div class="hug-artwork-frame">
+                <div class="hug-rim-light"></div>
+                <img
+                    class="hug-artwork"
+                    src="assets/hug-couple.png"
+                    alt=""
+                    width="640"
+                    height="800"
+                    decoding="async"
+                />
+                <div class="hug-artwork-shimmer"></div>
+            </div>
+
+            <div class="hug-float-particles" id="hug-float-particles" aria-hidden="true"></div>
+            <div class="hug-scene-hearts" aria-hidden="true">
+                <span class="hug-mini-heart">💕</span>
+                <span class="hug-mini-heart">✨</span>
+                <span class="hug-mini-heart">💖</span>
+            </div>
+        </div>
+        <p class="hug-scene-caption">In your arms is my favorite place</p>
+    </div>
+
+    <!-- 9. Toast Notification Widget -->
+    <div class="toast" id="toast-notification">Sparkle! ✨</div>
+
+    <!-- Print-only letter layout (hidden on screen) -->
+    <div id="print-letter-root" class="print-letter-root" aria-hidden="true"></div>
+
+    <!-- Scripts -->
+    <!-- discreet secret door -> password-gated private page -->
+    <a class="afterdark-fab" href="after-dark.html" title="only for you"><span class="m">🌙</span> after dark</a>
+
+    <script src="app.js"></script>
+</body>
+</html>

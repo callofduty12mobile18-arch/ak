@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Open When… — for my Chellam</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#fbeee9;
+  --muted:rgba(251,238,233,.6);
+  --rose:#f4a6b8;
+  --rose-deep:#e07a97;
+  --gold:#f3cf8a;
+  --amber:#ffb877;
+  --glass:rgba(255,255,255,.055);
+  --glass-brd:rgba(255,255,255,.12);
+  --wax:#c0435f;
+  --wax-deep:#8f2740;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;overflow-x:hidden}
+body{
+  font-family:'Montserrat',sans-serif;color:var(--ink);
+  background:#0e0710;min-height:100svh;position:relative;
+  -webkit-font-smoothing:antialiased;
+}
+#bg{position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(1100px 700px at 20% 8%,#4a1b2e 0%,transparent 60%),
+    radial-gradient(900px 600px at 85% 20%,#3a1424 0%,transparent 55%),
+    radial-gradient(800px 800px at 50% 100%,#2a1220 0%,transparent 60%),
+    linear-gradient(160deg,#160a14,#0e0710 70%);
+}
+#bg::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(600px 400px at 50% 30%,rgba(244,166,184,.10),transparent 70%);
+  animation:glow 8s ease-in-out infinite;}
+@keyframes glow{0%,100%{opacity:.5}50%{opacity:1}}
+#embers{position:fixed;inset:0;z-index:-1;pointer-events:none}
+
+.wrap{max-width:820px;margin:0 auto;padding:64px 20px 120px}
+.intro{text-align:center;margin-bottom:52px}
+.kicker{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.32em;font-size:.66rem;color:var(--rose);opacity:.85;margin-bottom:18px}
+h1{font-family:'Playfair Display';font-weight:600;font-size:clamp(2.1rem,8vw,3.4rem);line-height:1.05;letter-spacing:.01em}
+.grad{background:linear-gradient(115deg,var(--rose),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-family:'Cormorant Garamond';font-style:italic;font-size:clamp(1.05rem,4.4vw,1.35rem);color:var(--muted);margin-top:18px;line-height:1.5}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+
+/* envelope card */
+.env{position:relative;cursor:pointer;border-radius:16px;padding:26px 22px 30px;
+  background:linear-gradient(150deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  border:1px solid var(--glass-brd);overflow:hidden;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s;min-height:150px;
+  display:flex;flex-direction:column;justify-content:flex-end;}
+.env::before{content:"";position:absolute;inset:0;opacity:.5;
+  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.25));}
+.env:hover{transform:translateY(-6px);box-shadow:0 18px 40px -18px rgba(192,67,95,.6)}
+.env .flap{position:absolute;top:0;left:0;right:0;height:60%;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),transparent);
+  clip-path:polygon(0 0,100% 0,50% 78%);opacity:.6;transition:.4s}
+.env:hover .flap{opacity:.9}
+.seal{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);
+  width:46px;height:46px;border-radius:50%;z-index:3;
+  background:radial-gradient(circle at 35% 30%,var(--wax),var(--wax-deep));
+  box-shadow:0 4px 12px rgba(0,0,0,.45),inset 0 2px 3px rgba(255,255,255,.25);
+  display:grid;place-items:center;font-size:1.1rem;
+  transition:transform .3s}
+.env:hover .seal{transform:translate(-50%,-50%) rotate(-8deg) scale(1.06)}
+.env .lbl{position:relative;z-index:2}
+.env .tag{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.14em;font-size:.58rem;color:var(--rose);opacity:.8}
+.env .title{font-family:'Playfair Display';font-weight:600;font-size:1.18rem;margin-top:5px;line-height:1.15}
+.env .hint{font-family:'Cormorant Garamond';font-style:italic;font-size:.95rem;color:var(--muted);margin-top:8px}
+
+/* letter overlay */
+.overlay{position:fixed;inset:0;z-index:50;display:none;place-items:center;padding:22px;
+  background:rgba(8,4,9,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.overlay.on{display:grid;animation:fade .4s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.letter{position:relative;max-width:560px;width:100%;max-height:88svh;overflow-y:auto;
+  border-radius:20px;padding:40px 32px 44px;
+  background:linear-gradient(165deg,#fbf2ea,#f3e2d6);color:#3a2016;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,.8);
+  transform:translateY(18px) scale(.97);opacity:0;transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .5s}
+.overlay.on .letter{transform:none;opacity:1}
+.letter::before{content:"";position:absolute;inset:0;border-radius:20px;pointer-events:none;
+  box-shadow:inset 0 0 60px rgba(192,67,95,.08)}
+.letter .lt-tag{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.2em;font-size:.62rem;color:var(--rose-deep)}
+.letter h2{font-family:'Playfair Display';font-weight:600;font-size:1.7rem;margin:8px 0 20px;color:#5a1730}
+.letter p{font-family:'Cormorant Garamond';font-size:1.22rem;line-height:1.62;margin-bottom:15px}
+.letter .real{display:block;font-style:italic;padding:12px 16px;margin:16px 0;border-left:3px solid var(--rose-deep);
+  background:rgba(224,122,151,.10);border-radius:0 10px 10px 0;color:#7a2038}
+.letter .real .who{display:block;font-family:'Montserrat';font-style:normal;text-transform:uppercase;letter-spacing:.14em;font-size:.56rem;opacity:.65;margin-top:6px}
+.letter .sign{font-family:'Caveat';font-size:1.9rem;color:var(--wax-deep);margin-top:22px;line-height:1}
+.close{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(90,23,48,.1);color:#5a1730;font-size:1.1rem;display:grid;place-items:center}
+.close:hover{background:rgba(90,23,48,.2)}
+
+.footer{text-align:center;margin-top:64px}
+.btn{display:inline-block;font-family:'Montserrat';font-weight:500;font-size:.84rem;letter-spacing:.03em;
+  padding:12px 24px;border-radius:40px;border:1px solid var(--glass-brd);
+  color:var(--ink);background:var(--glass);text-decoration:none;
+  transition:transform .25s,background .25s;cursor:pointer}
+.btn:hover{transform:translateY(-3px);background:rgba(255,255,255,.1)}
+
+.afterdark-fab{position:fixed;right:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:7px;
+  font-family:'Montserrat';font-size:.74rem;letter-spacing:.02em;padding:9px 15px;border-radius:40px;
+  text-decoration:none;color:var(--muted);background:rgba(20,10,20,.55);border:1px solid var(--glass-brd);
+  opacity:.55;transition:.3s;backdrop-filter:blur(6px)}
+.afterdark-fab:hover{opacity:1;color:var(--rose);transform:translateY(-3px)}
+.afterdark-fab .m{font-size:.95rem}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="embers"></canvas>
+
+<div class="wrap">
+  <div class="intro">
+    <div class="kicker">only to be opened when you need it</div>
+    <h1>Open When…<br><span class="grad">my Chellam</span></h1>
+    <p class="lede">Some days you'll need to hear me even when I'm not there.<br>So I wrote these — one for every kind of day. Open the one that fits your heart right now.</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="footer">
+    <a class="btn" href="index.html">← back to our world</a>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="letter" id="letter">
+    <button class="close" id="close" aria-label="close">✕</button>
+    <div id="letterBody"></div>
+  </div>
+</div>
+
+<a class="afterdark-fab" href="after-dark.html" title="only for you"><span class="m">🌙</span> after dark</a>
+
+<script>
+/* embers */
+(function(){
+  const c=document.getElementById('embers'),x=c.getContext('2d');let w,h,p;
+  function rz(){w=c.width=innerWidth;h=c.height=innerHeight;
+    const n=Math.min(30,Math.floor(w/30));
+    p=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,r:.7+Math.random()*2.1,
+      vy:.15+Math.random()*.5,a:.1+Math.random()*.5,sw:Math.random()*6.28,
+      hue:Math.random()<.5?'244,166,184':'255,180,120'}));}
+  rz();addEventListener('resize',rz);
+  (function loop(){x.clearRect(0,0,w,h);
+    for(const e of p){e.y-=e.vy;e.sw+=.02;e.x+=Math.sin(e.sw)*.25;
+      if(e.y<-10){e.y=h+10;e.x=Math.random()*w;}
+      x.beginPath();x.arc(e.x,e.y,e.r,0,6.28);
+      x.fillStyle='rgba('+e.hue+','+e.a+')';x.shadowBlur=8;x.shadowColor='rgba('+e.hue+',.6)';x.fill();}
+    x.shadowBlur=0;requestAnimationFrame(loop);})();
+})();
+
+/* ==== the letters (built around real lines you two actually sent) ==== */
+const LETTERS=[
+  {
+    seal:"💌", tag:"open when", title:"you miss me",
+    hint:"for the quiet hours without me",
+    body:[
+      {p:"Hey Chellam. If you're reading this, it means you're missing me — and I want you to know I'm missing you exactly the same, in the exact same second."},
+      {p:"You don't have to be strong right now. Close your eyes and remember: distance was never able to touch what we have. It never will."},
+      {real:"Ne epo enna kuptalum na varuven, unakaga na irupen", who:"me — April 15"},
+      {p:"I meant that the day I said it and I mean it more today. Whenever you call, I come. For you, I'll always be here. Missing me just means our hearts are still reaching for each other — and they always find their way."}
+    ]
+  },
+  {
+    seal:"🌙", tag:"open when", title:"you can't sleep",
+    hint:"for the 2am nights",
+    body:[
+      {p:"Kutty, put the phone down in a minute, okay? Let me tuck you in with words instead of arms tonight."},
+      {p:"Breathe slow. Nothing is as heavy at midnight as it feels. Whatever kept you awake — hand it to me, I'll carry it till morning."},
+      {real:"Apo en kuda iru de Chellam 😌", who:"me"},
+      {p:"Imagine my arm around you, my heartbeat under your ear. Count the days we've loved instead of the worries. Sleep now, my Chellam. I'm right here, always, until you wake."}
+    ]
+  },
+  {
+    seal:"🩹", tag:"open when", title:"you're sad",
+    hint:"for the heavy days",
+    body:[
+      {p:"My love, come here. Whatever made your eyes wet today — it doesn't get to keep you. I've got you."},
+      {p:"You are allowed to feel it all. But don't you dare think you're alone in it. I love you at your lowest exactly as much as at your brightest — actually a little more, because that's when you need me most."},
+      {real:"Ne epude iruthalum na una kadhal leypa", who:"me — May 20"},
+      {p:"Wherever you are, however you are, I love you. That never bends and never breaks. Wipe your eyes, Chellam. Better days are already on their way, and I'll be in every one of them."}
+    ]
+  },
+  {
+    seal:"🔥", tag:"open when", title:"you're mad at me",
+    hint:"for when I've messed up",
+    body:[
+      {p:"Okay. You're angry at me, and you have every right to be. I'm not opening this to argue — I'm opening it to say I'm sorry, properly."},
+      {p:"I'd rather fight with you and fix it than have a perfect quiet day with anyone else. Be angry. Yell if you need to. I'm not going anywhere."},
+      {real:"Ne loose la illa Chellam", who:"me"},
+      {p:"You're not too much. You're not overreacting. You're mine, and I chose you on our best day and I'm choosing you right now on this messy one. Let's talk when you're ready. I'll be waiting with an open heart."}
+    ]
+  },
+  {
+    seal:"✨", tag:"open when", title:"you need to smile",
+    hint:"for when you forgot how good you are",
+    body:[
+      {p:"Stop whatever you're doing and smile, because I just remembered you again and my whole chest went warm."},
+      {p:"Do you know what you do to me? Some days I look at you and I genuinely can't handle how lovely you are."},
+      {real:"En chella kutty, inaiku enaku pudecha mathiri agala iruthuchu", who:"me"},
+      {real:"Ne tha pink dress la alaga irutha", who:"me"},
+      {p:"That's you. That's the effect. So there — I made you smile, and you made me fall all over again. Fair trade, Chellam. 🫂"}
+    ]
+  },
+  {
+    seal:"🤍", tag:"open when", title:"you doubt us",
+    hint:"for when you wonder if it's real",
+    body:[
+      {p:"If a small voice is whispering that maybe this fades, maybe I'll change — read this twice."},
+      {p:"I don't love you the way people love easily. I love you the way something becomes part of you. You are not a phase for me, Chellam."},
+      {real:"Una kathalecha en manasu ku savu illa de en kanmani", who:"me — June 1"},
+      {p:"Loving you keeps my heart alive, my kanmani. That's not a line I say — it's a thing I feel every single day. Never doubt us. We were the surest thing either of us ever did."}
+    ]
+  },
+  {
+    seal:"💞", tag:"open when", title:"it's our anniversary",
+    hint:"for the day it all began",
+    body:[
+      {p:"Happy anniversary, my Chellam. Look how far two people who couldn't stop texting have come."},
+      {p:"From a first hello, to \"Luv u kuda solala\", to trusting me with your whole heart, to a movie in the dark holding hands — every date on our little map led here, to you and me."},
+      {real:"Luv u too ngaa 🫂😚", who:"you — and I'll never get over it"},
+      {p:"Thank you for every day you chose me again. I'd relive all of them, even the hard ones, just to arrive back at you. Here's to the next hundred days, and the hundred after that."}
+    ]
+  }
+];
+
+const grid=document.getElementById('grid');
+const overlay=document.getElementById('overlay');
+const letterBody=document.getElementById('letterBody');
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+LETTERS.forEach((L,i)=>{
+  const card=document.createElement('div');
+  card.className='env';
+  card.innerHTML=
+    '<div class="flap"></div>'+
+    '<div class="seal">'+L.seal+'</div>'+
+    '<div class="lbl"><span class="tag">'+esc(L.tag)+'</span>'+
+    '<div class="title">'+esc(L.title)+'</div>'+
+    '<div class="hint">'+esc(L.hint)+'</div></div>';
+  card.addEventListener('click',()=>openLetter(i));
+  grid.appendChild(card);
+});
+
+function openLetter(i){
+  const L=LETTERS[i];
+  let html='<div class="lt-tag">'+esc(L.tag)+'</div><h2>'+esc(L.title)+'</h2>';
+  L.body.forEach(b=>{
+    if(b.p) html+='<p>'+esc(b.p)+'</p>';
+    if(b.real) html+='<span class="real">"'+esc(b.real)+'"<span class="who">'+esc(b.who||'')+'</span></span>';
+  });
+  html+='<div class="sign">— always, your Thangam</div>';
+  letterBody.innerHTML=html;
+  overlay.classList.add('on');
+  document.querySelector('.letter').scrollTop=0;
+}
+function closeLetter(){overlay.classList.remove('on');}
+document.getElementById('close').addEventListener('click',closeLetter);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeLetter();});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeLetter();});
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>🌙</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#f6e7e2;
+  --muted:rgba(246,231,226,.58);
+  --rose:#e888a0;
+  --wine:#c05070;
+  --ember:#ff8a5c;
+  --glass:rgba(255,255,255,.05);
+  --glass-brd:rgba(255,255,255,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Montserrat',system-ui,sans-serif;color:var(--ink);background:#0a0409;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+#bg{position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(80% 55% at 50% 0%, #4a1024 0%, rgba(74,16,36,0) 55%),
+    radial-gradient(70% 55% at 80% 40%, #360a1e 0%, rgba(54,10,30,0) 52%),
+    radial-gradient(90% 80% at 15% 92%, #24081a 0%, rgba(36,8,26,0) 55%),
+    linear-gradient(170deg,#12060e 0%,#1a0812 50%,#0a0409 100%);}
+#bg::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(46% 30% at 50% 46%, rgba(255,110,90,.06), transparent 72%);
+  animation:pulse 7s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
+
+/* ---------- GATE ---------- */
+#gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:30px;gap:22px;
+  background:rgba(10,4,9,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  transition:opacity .9s ease,visibility .9s}
+#gate.open{opacity:0;visibility:hidden;pointer-events:none}
+.lock{font-size:3.2rem;filter:drop-shadow(0 0 22px rgba(232,136,160,.55));transition:transform .5s}
+.lock.shake{animation:shake .5s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+#gate h1{font-family:'Playfair Display',serif;font-weight:600;font-size:clamp(1.5rem,6vw,2.2rem);line-height:1.15}
+#gate .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--muted);max-width:26ch}
+.gate-form{display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px;margin-top:4px}
+#pass{width:100%;padding:14px 18px;border-radius:40px;border:1px solid var(--glass-brd);
+  background:rgba(255,255,255,.06);color:var(--ink);font-size:1rem;text-align:center;
+  letter-spacing:.06em;outline:none;transition:border-color .3s}
+#pass:focus{border-color:var(--rose)}
+#pass::placeholder{color:rgba(246,231,226,.35)}
+.unlock{padding:14px;border-radius:40px;border:none;cursor:pointer;font-family:'Montserrat';
+  font-weight:600;font-size:.9rem;letter-spacing:.04em;color:#2a0512;
+  background:linear-gradient(120deg,var(--rose),var(--ember))}
+.unlock:active{transform:scale(.98)}
+#err{font-size:.8rem;color:var(--rose);min-height:1em;opacity:0;transition:opacity .3s}
+#err.show{opacity:1}
+.gate-hint{font-size:.68rem;color:rgba(246,231,226,.35);letter-spacing:.04em}
+.gate-back{font-size:.7rem;color:var(--muted);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.gate-back:hover{opacity:1}
+
+/* ---------- ROOM ---------- */
+#room{max-width:600px;margin:0 auto;padding:80px 24px 120px;opacity:0;transition:opacity 1.2s ease .2s}
+#room.reveal{opacity:1}
+.room-head{text-align:center;margin-bottom:56px}
+.room-head .eyebrow{font-weight:500;letter-spacing:.4em;text-transform:uppercase;font-size:.64rem;color:var(--rose)}
+.room-head h2{font-family:'Playfair Display',serif;font-weight:500;font-style:italic;
+  font-size:clamp(1.9rem,7vw,2.8rem);margin-top:14px;line-height:1.1}
+.room-head p{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--muted);margin-top:14px;font-style:italic}
+
+.whisper{max-width:80%;margin-bottom:22px;padding:15px 19px;border-radius:20px;position:relative;
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,4.2vw,1.42rem);line-height:1.45;
+  box-shadow:0 12px 30px rgba(0,0,0,.4);opacity:0;transform:translateY(24px) scale(.98);
+  transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.whisper.in{opacity:1;transform:none}
+.whisper .who{display:block;font-family:'Montserrat';font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;opacity:.5;margin-top:8px}
+.whisper.him{margin-left:auto;color:#2a0d05;border-bottom-right-radius:5px;
+  background:linear-gradient(135deg,#ffd0ad,#ff9e78)}
+.whisper.her{margin-right:auto;background:rgba(255,255,255,.08);border:1px solid var(--glass-brd);border-bottom-left-radius:5px}
+
+.room-foot{text-align:center;margin-top:56px;display:flex;flex-direction:column;gap:16px;align-items:center}
+.room-foot .close-note{font-family:'Caveat',cursive;font-size:1.7rem;color:var(--ember)}
+.room-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn{font-family:'Montserrat';font-weight:500;font-size:.82rem;letter-spacing:.03em;padding:12px 22px;
+  border-radius:40px;border:1px solid var(--glass-brd);color:var(--ink);background:var(--glass);
+  text-decoration:none;cursor:pointer;transition:transform .25s,background .25s}
+.btn:hover{transform:translateY(-3px);background:rgba(255,255,255,.09)}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+
+<!-- PASSWORD GATE -->
+<div id="gate">
+  <div class="lock" id="lock">🔒</div>
+  <h1>This part is only for you.</h1>
+  <p class="sub">Some things I only ever said to you in the dark. Say our word and I'll say them again.</p>
+  <form class="gate-form" id="gateForm" autocomplete="off">
+    <input id="pass" type="password" placeholder="what do you call me? 🖤" autocomplete="off" spellcheck="false">
+    <button class="unlock" type="submit">unlock 🔓</button>
+    <div id="err">that's not our word… try again 🖤</div>
+  </form>
+  <div class="gate-hint">hint: it starts with a “T” 😉</div>
+  <a class="gate-back" href="our-words.html">← go back</a>
+</div>
+
+<!-- THE ROOM -->
+<div id="room">
+  <div class="room-head">
+    <span class="eyebrow">after dark</span>
+    <h2>just you &amp; me, Chellam.</h2>
+    <p>real words. our words. no one else's. 🖤</p>
+  </div>
+  <div id="whispers"></div>
+  <div class="room-foot">
+    <div class="close-note">…now come here. 🫂</div>
+    <div class="room-btns">
+      <button class="btn" id="lockBtn">🔒 lock it again</button>
+      <a class="btn" href="our-words.html">← the sweeter side</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== CHANGE YOUR SECRET WORD HERE =====
+   The answer she must type (lowercase, spaces ignored). Default: what she calls you. */
+const SECRET = "thangam";
+/* ======================================== */
+
+/* intimate whispers — real messages, stored base64 so a casual peek won't spoil them */
+const PAYLOAD = "W3sidyI6ICJoaW0iLCAidCI6ICJVbiB0aWdodCBoYSBodWcgcGFubml0deKApiBTaGFsdSwgcmFpbmluZyBoYSBpcnVrdSwgZmFuIHBvdHUgaXJ1a2HigKYgYmVkc2hlZXQgdWxsYSB2YXJleWEgbnUifSwgeyJ3IjogImhlciIsICJ0IjogIktpc3MgcGFubnV2YeKApiJ9LCB7InciOiAiaGVyIiwgInQiOiAiSHVnIHBhbm51dmHigKYifSwgeyJ3IjogImhpbSIsICJ0IjogIlVuYSBwYWR1a2EgdmVjaGl0dSwgdW4gbWVsYSBuYSBmb3JlaGVhZCBsYSBraXNzIHBhbm5pdHXigKYifSwgeyJ3IjogImhpbSIsICJ0IjogIlVuYWt1IGxpcCBsYSBraXNzIHBhbm51dmVuIn0sIHsidyI6ICJoaW0iLCAidCI6ICJVbiBuZWNrIGxhIGtpc3MgcGFubmHigKYifSwgeyJ3IjogImhpbSIsICJ0IjogIlVuIGthbmF0aHUgbGEga2lzcyBwYW5uaXR1In0sIHsidyI6ICJoZXIiLCAidCI6ICJBcGRpeWFlIGdhcCBsYSBraXNzIGt1ZHVrdXJh4oCmIHBhYXRoaXlhIG5lZSJ9LCB7InciOiAiaGltIiwgInQiOiAiRW4ga3VkYSBrb2phbSBuZWFybSwga2FuYSBtdWRlLCB0aHVndWdhIn0sIHsidyI6ICJoaW0iLCAidCI6ICJOYW51bSB1biBrdWRhIGV5IHRodWd1dmVuIn0sIHsidyI6ICJoaW0iLCAidCI6ICJVbmFrdSBldGhhbmEgbWF0aHJpIHBhbm51dmVuIHNvZnQgaGEifSwgeyJ3IjogImhpbSIsICJ0IjogIk5hIHRoYSByYXNpcGEgbmUg4oCUIGRyZXNzIG9kYSBpcnV0aGFsdW0sIG51ZGUgaGEgaXJ1dGhhbHVtIn0sIHsidyI6ICJoaW0iLCAidCI6ICJFbmFrdSB1biBrdWRhIHJvbWFudGljIGhhIHBlc2l0ZXkuIFVuYSBraXNzIHBhbm5pdGV5LiBVbiBkcmVzcyBoYSBzb2Z0IGhhIHRvdWNoIHBhbm5pdHXigKYgdW5hIHVtIGVubmF1bSBzYXRpc2Z5IHBhbm51dmVuIn0sIHsidyI6ICJoZXIiLCAidCI6ICJTZXJpaeKApiBhcHJvIG5hYW5hZSBwYW5uaWtyZW4g8J+royJ9LCB7InciOiAiaGltIiwgInQiOiAiVW5hIHRlbXAgcGFubmksIHBsZWFzdXJlIGt1ZHV0aHUgdGhh4oCmIn0sIHsidyI6ICJoZXIiLCAidCI6ICJOZWUgcmVhZHkgcGFubnV2YSBsYeKApiB3ZXQgbGEgcGFubnV2YSJ9LCB7InciOiAiaGltIiwgInQiOiAiVW4gbmVqdSBtZWxhIHBhZHV0aHUga2HigKYgbmEgdW5ha3UgcHJvdW1haSBoYSBpcnVwYSJ9LCB7InciOiAiaGltIiwgInQiOiAiQXBybSBub3JtYWwgYWdldHUsIHVuIGt1ZGEgZXkgdGh1Z2VkdXZlbiDwn5iMIn1d";
+
+const gate=document.getElementById('gate'), room=document.getElementById('room'),
+      form=document.getElementById('gateForm'), pass=document.getElementById('pass'),
+      err=document.getElementById('err'), lock=document.getElementById('lock');
+
+function norm(s){return (s||'').toLowerCase().replace(/\s+/g,'').trim();}
+
+function renderRoom(){
+  let data;
+  try{ data=JSON.parse(decodeURIComponent(escape(atob(PAYLOAD)))); }catch(e){ data=[]; }
+  const host=document.getElementById('whispers');
+  host.innerHTML='';
+  data.forEach(d=>{
+    const el=document.createElement('div');
+    el.className='whisper '+(d.w==='him'?'him':'her');
+    el.innerHTML=String(d.t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))
+      +'<span class="who">'+(d.w==='him'?'me':'her')+'</span>';
+    host.appendChild(el);
+  });
+  // staggered reveal
+  const w=host.querySelectorAll('.whisper');
+  const wio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){
+    setTimeout(()=>e.target.classList.add('in'),80);wio.unobserve(e.target);}});},{threshold:.2});
+  w.forEach(x=>wio.observe(x));
+}
+
+function unlock(){
+  gate.classList.add('open');
+  room.classList.add('reveal');
+  renderRoom();
+  try{ sessionStorage.setItem('ad_unlocked','1'); }catch(e){}
+}
+
+form.addEventListener('submit',(e)=>{
+  e.preventDefault();
+  if(norm(pass.value)===norm(SECRET)){ unlock(); }
+  else{
+    err.classList.add('show'); lock.classList.remove('shake'); void lock.offsetWidth; lock.classList.add('shake');
+    pass.value=''; setTimeout(()=>err.classList.remove('show'),2200);
+  }
+});
+
+document.getElementById('lockBtn').addEventListener('click',()=>{
+  try{ sessionStorage.removeItem('ad_unlocked'); }catch(e){}
+  location.reload();
+});
+
+/* stay unlocked within the session */
+try{ if(sessionStorage.getItem('ad_unlocked')==='1'){ gate.classList.add('open'); room.classList.add('reveal'); renderRoom(); } }catch(e){}
+window.addEventListener('load',()=>pass.focus());
+</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Our Time Capsule — letters from future me</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#fbeee9;
+  --muted:rgba(251,238,233,.6);
+  --rose:#f4a6b8;
+  --rose-deep:#e07a97;
+  --gold:#f3cf8a;
+  --amber:#ffb877;
+  --glass:rgba(255,255,255,.055);
+  --glass-brd:rgba(255,255,255,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;overflow-x:hidden}
+body{font-family:'Montserrat',sans-serif;color:var(--ink);background:#0d0910;min-height:100svh;position:relative;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(1100px 700px at 22% 8%,#2c2246 0%,transparent 60%),
+    radial-gradient(900px 600px at 85% 88%,#3a1836 0%,transparent 55%),
+    radial-gradient(800px 800px at 50% 45%,#191038 0%,transparent 62%),
+    linear-gradient(160deg,#120c1c,#0d0910 74%);}
+#bg::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(600px 420px at 50% 30%,rgba(243,207,138,.08),transparent 70%);
+  animation:glow 9s ease-in-out infinite}
+@keyframes glow{0%,100%{opacity:.45}50%{opacity:.95}}
+#stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+
+.wrap{max-width:760px;margin:0 auto;padding:60px 20px 120px}
+.intro{text-align:center;margin-bottom:48px}
+.kicker{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.32em;font-size:.66rem;color:var(--gold);opacity:.85;margin-bottom:16px}
+h1{font-family:'Playfair Display';font-weight:600;font-size:clamp(2rem,7.6vw,3.2rem);line-height:1.05}
+.grad{background:linear-gradient(115deg,var(--rose),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-family:'Cormorant Garamond';font-style:italic;font-size:clamp(1.05rem,4.4vw,1.35rem);color:var(--muted);margin-top:16px;line-height:1.5}
+
+.cap{position:relative;margin-bottom:22px;border-radius:18px;overflow:hidden;
+  background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid var(--glass-brd);transition:transform .3s,box-shadow .3s}
+.cap.unlocked{cursor:pointer}
+.cap.unlocked:hover{transform:translateY(-4px);box-shadow:0 20px 44px -22px rgba(243,207,138,.5)}
+.cap .top{display:flex;align-items:center;gap:16px;padding:22px 22px}
+.cap .icon{font-size:1.8rem;flex:0 0 auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.cap .meta{flex:1;min-width:0}
+.cap .name{font-family:'Playfair Display';font-weight:600;font-size:1.24rem;line-height:1.15}
+.cap .when{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.14em;font-size:.6rem;color:var(--muted);margin-top:5px}
+.cap .state{flex:0 0 auto;font-family:'Montserrat';font-size:.68rem;letter-spacing:.08em;padding:6px 12px;border-radius:30px;white-space:nowrap}
+.cap.locked .state{color:var(--muted);border:1px solid var(--glass-brd)}
+.cap.unlocked .state{color:#3a0f22;background:linear-gradient(120deg,var(--rose),var(--gold));font-weight:600}
+
+.countdown{padding:0 22px 20px;display:flex;gap:14px}
+.cap.unlocked .countdown{display:none}
+.cd-unit{text-align:center;background:rgba(255,255,255,.04);border:1px solid var(--glass-brd);border-radius:12px;padding:10px 0;flex:1}
+.cd-unit b{display:block;font-family:'Playfair Display';font-size:1.5rem;color:var(--gold);line-height:1}
+.cd-unit span{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.12em;font-size:.52rem;color:var(--muted);margin-top:5px;display:block}
+.openhint{padding:0 22px 20px;font-family:'Cormorant Garamond';font-style:italic;font-size:1.02rem;color:var(--gold);display:none}
+.cap.unlocked .openhint{display:block}
+
+/* reveal overlay */
+.overlay{position:fixed;inset:0;z-index:50;display:none;place-items:center;padding:22px;background:rgba(8,6,14,.74);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.overlay.on{display:grid;animation:fade .4s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.letter{position:relative;max-width:560px;width:100%;max-height:88svh;overflow-y:auto;border-radius:20px;padding:40px 32px 44px;
+  background:linear-gradient(165deg,#fbf3ea,#f2e4d8);color:#3a2016;box-shadow:0 40px 90px -30px rgba(0,0,0,.8);
+  transform:translateY(18px) scale(.97);opacity:0;transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .5s}
+.overlay.on .letter{transform:none;opacity:1}
+.letter .lt-when{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.2em;font-size:.62rem;color:var(--rose-deep)}
+.letter h2{font-family:'Playfair Display';font-weight:600;font-size:1.7rem;margin:8px 0 20px;color:#5a1730}
+.letter p{font-family:'Cormorant Garamond';font-size:1.22rem;line-height:1.62;margin-bottom:15px}
+.letter .real{display:block;font-style:italic;padding:12px 16px;margin:16px 0;border-left:3px solid var(--rose-deep);background:rgba(224,122,151,.10);border-radius:0 10px 10px 0;color:#7a2038}
+.letter .real .who{display:block;font-family:'Montserrat';font-style:normal;text-transform:uppercase;letter-spacing:.14em;font-size:.56rem;opacity:.65;margin-top:6px}
+.letter .sign{font-family:'Caveat';font-size:1.9rem;color:#8f2740;margin-top:22px;line-height:1}
+.close{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;background:rgba(90,23,48,.1);color:#5a1730;font-size:1.1rem}
+.close:hover{background:rgba(90,23,48,.2)}
+
+.footer{text-align:center;margin-top:56px}
+.btn{display:inline-block;font-family:'Montserrat';font-weight:500;font-size:.84rem;letter-spacing:.03em;padding:12px 24px;border-radius:40px;
+  border:1px solid var(--glass-brd);color:var(--ink);background:var(--glass);text-decoration:none;transition:transform .25s,background .25s}
+.btn:hover{transform:translateY(-3px);background:rgba(255,255,255,.1)}
+.note{font-family:'Cormorant Garamond';font-style:italic;font-size:.95rem;color:var(--muted);margin-top:16px}
+
+.afterdark-fab{position:fixed;right:16px;bottom:16px;z-index:40;display:inline-flex;align-items:center;gap:7px;
+  font-family:'Montserrat';font-size:.74rem;padding:9px 15px;border-radius:40px;text-decoration:none;color:var(--muted);
+  background:rgba(20,12,22,.55);border:1px solid var(--glass-brd);opacity:.55;transition:.3s;backdrop-filter:blur(6px)}
+.afterdark-fab:hover{opacity:1;color:var(--rose);transform:translateY(-3px)}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="stars"></canvas>
+
+<div class="wrap">
+  <div class="intro">
+    <div class="kicker">letters that open on their own time</div>
+    <h1>Our <span class="grad">Time Capsule</span></h1>
+    <p class="lede">I wrote these for a future us. You can see them, but you can't open them early —<br>each one waits for its day, then unlocks itself, just for you.</p>
+  </div>
+
+  <div id="list"></div>
+
+  <div class="footer">
+    <a class="btn" href="index.html">← back to our world</a>
+    <div class="note">psst — some dates below are placeholders (like your birthday). Ask me to set the real ones. 🤍</div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="letter" id="letter">
+    <button class="close" id="close" aria-label="close">✕</button>
+    <div id="letterBody"></div>
+  </div>
+</div>
+
+<a class="afterdark-fab" href="after-dark.html" title="only for you">🌙 after dark</a>
+
+<script>
+/* soft starfield */
+(function(){
+  const c=document.getElementById('stars'),x=c.getContext('2d');let w,h,p;
+  function rz(){w=c.width=innerWidth;h=c.height=innerHeight;
+    const n=Math.min(70,Math.floor(w/16));
+    p=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,r:.4+Math.random()*1.3,tw:Math.random()*6.28,sp:.4+Math.random()*1.6,
+      hue:Math.random()<.5?'243,207,138':'244,166,184'}));}
+  rz();addEventListener('resize',rz);let t=0;
+  (function loop(){t+=.016;x.clearRect(0,0,w,h);
+    for(const s of p){const a=.2+.5*Math.abs(Math.sin(t*s.sp+s.tw));
+      x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fillStyle='rgba('+s.hue+','+a+')';x.shadowBlur=6;x.shadowColor='rgba('+s.hue+',.6)';x.fill();}
+    x.shadowBlur=0;requestAnimationFrame(loop);})();
+})();
+
+/* ==== the capsules ====
+   EDIT the `date` values (YYYY-MM-DD) to real ones — birthday etc.
+   A capsule with date <= today unlocks automatically. */
+const CAPSULES=[
+  {
+    icon:"💗", name:"Open the moment you find this", date:"2026-03-24",
+    when:"unlocked — I couldn't make you wait",
+    body:[
+      {p:"Some things I refuse to make you earn or wait for. This is one of them."},
+      {p:"If you're holding this whole capsule in your hands, it means I trusted the future enough to write to it. That's because of you, Chellam. You made me believe in later."},
+      {real:"Luv u too ngaa 🫂😚", who:"you — the words I live on"},
+      {p:"Everything locked below is future-me talking to you. Be patient with them. They're worth the wait — I promise."}
+    ]
+  },
+  {
+    icon:"🎂", name:"On your birthday", date:"2026-11-15",
+    when:"unlocks on your birthday",
+    body:[
+      {p:"Happy birthday, my Chellam. The whole world got luckier the day you were born, and no one more than me."},
+      {p:"I don't have the words big enough for what you are, so I'll keep it simple: thank you for existing, and thank you for letting me love you."},
+      {real:"I love you shalu 🫂", who:"me"},
+      {p:"However far or near I am when this opens — today, you are the most loved person alive. Make a wish. I'm already yours, so aim for something extra."}
+    ]
+  },
+  {
+    icon:"💞", name:"One full year of us", date:"2027-03-24",
+    when:"unlocks on our 1-year",
+    body:[
+      {p:"One year. Three hundred and sixty-five days of choosing each other, and I'd choose you three hundred and sixty-five more times without blinking."},
+      {p:"Remember when a single day of us was 3,084 messages? We were never going to be a quiet love. We were always going to be this loud, this sure."},
+      {real:"Una kathalecha en manasu ku savu illa de en kanmani", who:"me — and still true"},
+      {p:"Here's to year two, and the version of us that's reading this. I hope we're even more in love. I already know we are."}
+    ]
+  },
+  {
+    icon:"🌌", name:"1000 days since our first hello", date:"2027-07-01",
+    when:"unlocks at 1000 days",
+    body:[
+      {p:"A thousand days ago you were a stranger who said hi. Look at us now."},
+      {p:"Everyone said the fast ones burn out. We just kept burning. A thousand days and I still reach for my phone to tell you every small thing."},
+      {real:"Ne epo enna kuptalum na varuven, unakaga na irupen", who:"me — day one and day one thousand"},
+      {p:"Whatever these thousand days built, I want a thousand more of it. And then a thousand after that."}
+    ]
+  },
+  {
+    icon:"🌧️", name:"Open on a day you feel far from me", date:"2099-12-31",
+    when:"unlock this one anytime you need it",
+    unlockable:true,
+    body:[
+      {p:"This one has no real date. It's for whenever the distance feels bigger than it should — open it the second you need it, don't wait."},
+      {p:"Close your eyes. Distance is just kilometers, and kilometers have never once won against us. Not on our worst day."},
+      {real:"Ne epude iruthalum na una kadhal leypa", who:"me"},
+      {p:"Wherever you are, however far — I love you. Come back to this whenever the feeling comes. I'll be in these words, waiting, every single time."}
+    ]
+  }
+];
+
+const list=document.getElementById('list');
+const overlay=document.getElementById('overlay');
+const letterBody=document.getElementById('letterBody');
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+const now=new Date();
+
+function isOpen(cap){
+  if(cap.unlockable)return true; // no-date "open anytime" one
+  return new Date(cap.date+'T00:00:00')<=now;
+}
+
+CAPSULES.forEach((cap,i)=>{
+  const open=isOpen(cap);
+  const el=document.createElement('div');
+  el.className='cap '+(open?'unlocked':'locked');
+  const target=new Date(cap.date+'T00:00:00');
+  el.innerHTML=
+    '<div class="top">'+
+      '<div class="icon">'+(open?cap.icon:'🔒')+'</div>'+
+      '<div class="meta"><div class="name">'+esc(cap.name)+'</div>'+
+      '<div class="when">'+esc(cap.when)+'</div></div>'+
+      '<div class="state">'+(open?'tap to open ✨':'locked')+'</div>'+
+    '</div>'+
+    '<div class="countdown" data-target="'+target.getTime()+'">'+
+      '<div class="cd-unit"><b class="d">–</b><span>days</span></div>'+
+      '<div class="cd-unit"><b class="h">–</b><span>hrs</span></div>'+
+      '<div class="cd-unit"><b class="m">–</b><span>min</span></div>'+
+      '<div class="cd-unit"><b class="s">–</b><span>sec</span></div>'+
+    '</div>'+
+    '<div class="openhint">a letter from me is waiting inside — tap to unfold it</div>';
+  if(open){el.addEventListener('click',()=>openCap(i));}
+  list.appendChild(el);
+});
+
+function tick(){
+  document.querySelectorAll('.countdown').forEach(cd=>{
+    const target=+cd.dataset.target;
+    let diff=Math.max(0,target-Date.now());
+    const d=Math.floor(diff/86400000);diff-=d*86400000;
+    const h=Math.floor(diff/3600000);diff-=h*3600000;
+    const m=Math.floor(diff/60000);diff-=m*60000;
+    const s=Math.floor(diff/1000);
+    cd.querySelector('.d').textContent=d;
+    cd.querySelector('.h').textContent=String(h).padStart(2,'0');
+    cd.querySelector('.m').textContent=String(m).padStart(2,'0');
+    cd.querySelector('.s').textContent=String(s).padStart(2,'0');
+  });
+}
+tick();setInterval(tick,1000);
+
+function openCap(i){
+  const cap=CAPSULES[i];
+  let html='<div class="lt-when">'+esc(cap.when)+'</div><h2>'+esc(cap.name)+'</h2>';
+  cap.body.forEach(b=>{
+    if(b.p)html+='<p>'+esc(b.p)+'</p>';
+    if(b.real)html+='<span class="real">"'+esc(b.real)+'"<span class="who">'+esc(b.who||'')+'</span></span>';
+  });
+  html+='<div class="sign">— always, your Thangam</div>';
+  letterBody.innerHTML=html;
+  overlay.classList.add('on');
+  document.querySelector('.letter').scrollTop=0;
+}
+function closeCap(){overlay.classList.remove('on');}
+document.getElementById('close').addEventListener('click',closeCap);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeCap();});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeCap();});
+</script>
+</body>
+</html>

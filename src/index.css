@@ -1,0 +1,343 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Montserrat:ital,wght@0,300..700;1,300..500&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ──────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: dark;
+  --gold:        #e8c16a;
+  --rose:        #d4778d;
+  --ink:         #fbeee9;
+  --muted:       rgba(251, 238, 233, 0.50);
+  --faint:       rgba(251, 238, 233, 0.22);
+  --surface:     rgba(255, 255, 255, 0.035);
+  --surface-hi:  rgba(255, 255, 255, 0.055);
+  --border:      rgba(255, 255, 255, 0.07);
+  --border-mid:  rgba(255, 255, 255, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0a0408;
+  background-image:
+    radial-gradient(ellipse 1400px 700px at 10% 0%,   rgba(74, 16, 36, 0.38) 0%, transparent 65%),
+    radial-gradient(ellipse 900px 600px  at 90% 20%,  rgba(42, 8, 24, 0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 1000px 800px at 20% 100%, rgba(30, 6, 20, 0.35) 0%, transparent 60%);
+  background-attachment: fixed;
+  color: #fbeee9;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 300;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography ────────────────────────────────────────────────── */
+
+/* Display Cormorant italic — the signature type treatment.
+   Used for large headlines, Tamil quotes, and greeting text.
+   Never use this at small sizes. */
+.type-display {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.6rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+/* Section headings — Playfair 700 only. Not italic, not gradient. */
+.type-heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* Tamil / Tanglish quoted text — always this treatment */
+.type-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+  line-height: 1.55;
+}
+
+/* Handwritten / personal — Caveat only for captions and signatures */
+.type-hand {
+  font-family: 'Caveat', cursive;
+  font-weight: 500;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.4;
+}
+
+/* Label — sentence-case, Montserrat 400, small */
+.type-label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+/* Counter numerals — Playfair at display scale */
+.type-counter {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Gold rule — the one structural accent ─────────────────────── */
+
+/* A thin horizontal rule in gold. Used once per section as a heading accent.
+   Width is set by JS/JSX via inline style or a fixed class. */
+.gold-rule {
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, rgba(232, 193, 106, 0.0) 100%);
+  margin-top: 0.5rem;
+  border: none;
+}
+
+/* Full-width variant for dividers between sections */
+.gold-rule-full {
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(232, 193, 106, 0.35) 20%,
+    rgba(232, 193, 106, 0.35) 80%,
+    transparent 100%
+  );
+  border: none;
+  margin: 0;
+}
+
+/* ─── Surface / Glass system — quieter than v1 ──────────────────── */
+
+/* Subtle panel — almost invisible tint, just structure */
+.glass {
+  background: var(--surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+}
+
+/* Elevated card — a touch more presence */
+.glass-card {
+  background: linear-gradient(150deg, var(--surface-hi) 0%, var(--surface) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.55);
+  transition: border-color 0.25s ease;
+}
+
+/* Hover: only a border shift. No scale, no glow. */
+.glass-card:hover {
+  border-color: rgba(232, 193, 106, 0.22);
+}
+
+/* Interaction — buttons and tappable surfaces */
+.glass-button {
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-mid);
+  transition: background 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(232, 193, 106, 0.35);
+}
+
+.glass-button:active {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ─── Parchment — for letter overlays ──────────────────────────── */
+
+.parchment {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.45), rgba(245, 230, 218, 0.97)),
+    linear-gradient(170deg, #fdf6ee 0%, #f7e6d6 50%, #f1dac6 100%);
+  color: #2e160e;
+  box-shadow:
+    0 32px 80px -16px rgba(0, 0, 0, 0.8),
+    inset 0 0 60px rgba(180, 80, 60, 0.06);
+  border: 1px solid rgba(210, 160, 130, 0.25);
+}
+
+/* ─── Wax seal ──────────────────────────────────────────────────── */
+
+.wax-seal {
+  background: radial-gradient(circle at 35% 30%, #c44060, #7a1b30 68%, #3e0a18);
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.45),
+    inset 0 2px 3px rgba(255, 255, 255, 0.25),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Section structure ─────────────────────────────────────────── */
+
+/* Consistent vertical padding for each section */
+.section {
+  max-width: 56rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  padding-block: 4rem;
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding-inline: 1.5rem;
+    padding-block: 5.5rem;
+  }
+}
+
+/* ─── Admin panel controls ──────────────────────────────────────── */
+
+@layer components {
+  .admin-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.375rem;
+  }
+
+  .admin-hint {
+    display: block;
+    margin-top: 0.375rem;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    color: rgba(251, 238, 233, 0.35);
+  }
+
+  .admin-input {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-mid);
+    color: #fbeee9;
+    font-size: 0.9375rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .admin-input:focus {
+    outline: none;
+    border-color: rgba(232, 193, 106, 0.5);
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  .admin-input::placeholder {
+    color: rgba(251, 238, 233, 0.28);
+  }
+
+  .admin-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-mid);
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .admin-btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(232, 193, 106, 0.35);
+    color: #fbeee9;
+  }
+
+  .admin-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(90deg, var(--rose) 0%, var(--gold) 100%);
+    color: #0a0408;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 30px -10px rgba(232, 193, 106, 0.5);
+    transition: opacity 0.2s ease, transform 0.1s ease;
+  }
+
+  .admin-btn-primary:hover { opacity: 0.95; }
+  .admin-btn-primary:active { transform: scale(0.98); }
+}
+
+/* ─── Scrollbars ────────────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #0a0408; }
+::-webkit-scrollbar-thumb {
+  background: rgba(232, 193, 106, 0.2);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(232, 193, 106, 0.4); }
+
+/* ─── Focus visibility (accessibility) ─────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Print — save letters as PDF ──────────────────────────────── */
+
+@media print {
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%;
+    color: #2a150c !important;
+    background: #fff !important;
+    padding: 40px !important;
+    font-family: 'Cormorant Garamond', serif;
+  }
+}

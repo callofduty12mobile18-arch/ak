@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Our Constellation — a sky of us</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#f4ecff;
+  --muted:rgba(244,236,255,.6);
+  --rose:#f4a6b8;
+  --gold:#f3cf8a;
+  --amber:#ffb877;
+  --star:#fff6e0;
+  --glass:rgba(255,255,255,.06);
+  --glass-brd:rgba(255,255,255,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden}
+body{font-family:'Montserrat',sans-serif;color:var(--ink);background:#05040c;position:relative;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(1200px 800px at 25% 15%,#241a45 0%,transparent 60%),
+    radial-gradient(900px 700px at 80% 85%,#3a1836 0%,transparent 55%),
+    radial-gradient(700px 700px at 60% 40%,#12102e 0%,transparent 60%),
+    linear-gradient(160deg,#0a0820,#05040c 75%);}
+canvas{position:fixed;inset:0;display:block}
+#sky{z-index:0;touch-action:none;cursor:grab}
+#sky:active{cursor:grabbing}
+
+/* header */
+.head{position:fixed;top:0;left:0;right:0;z-index:5;text-align:center;padding:26px 20px 40px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(5,4,12,.85),transparent)}
+.kicker{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.34em;font-size:.62rem;color:var(--rose);opacity:.85;margin-bottom:12px}
+h1{font-family:'Playfair Display';font-weight:600;font-size:clamp(1.5rem,6.4vw,2.4rem);line-height:1.05}
+.grad{background:linear-gradient(115deg,var(--rose),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-family:'Cormorant Garamond';font-style:italic;font-size:clamp(.95rem,3.8vw,1.15rem);color:var(--muted);margin-top:8px}
+
+/* progress */
+.prog{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:6;
+  display:flex;align-items:center;gap:10px;font-family:'Montserrat';font-size:.7rem;letter-spacing:.05em;color:var(--muted);
+  background:rgba(10,8,24,.6);border:1px solid var(--glass-brd);padding:8px 16px;border-radius:40px;backdrop-filter:blur(6px)}
+.prog b{color:var(--gold);font-weight:600}
+.prog.done{color:var(--gold);border-color:rgba(243,207,138,.4)}
+
+/* memory panel */
+.panel{position:fixed;left:50%;bottom:-100%;transform:translateX(-50%);z-index:7;width:min(520px,92vw);
+  background:linear-gradient(165deg,rgba(30,22,52,.96),rgba(18,14,38,.96));
+  border:1px solid var(--glass-brd);border-radius:22px 22px 0 0;padding:26px 24px 30px;
+  box-shadow:0 -30px 80px -30px rgba(0,0,0,.9);transition:bottom .5s cubic-bezier(.2,.85,.2,1);backdrop-filter:blur(14px)}
+.panel.on{bottom:0}
+.panel .date{font-family:'Montserrat';text-transform:uppercase;letter-spacing:.2em;font-size:.6rem;color:var(--rose)}
+.panel h2{font-family:'Playfair Display';font-weight:600;font-size:1.5rem;margin:6px 0 12px;line-height:1.1}
+.panel p{font-family:'Cormorant Garamond';font-size:1.16rem;line-height:1.55;color:#e9dffa;margin-bottom:14px}
+.panel .real{display:block;font-family:'Cormorant Garamond';font-style:italic;font-size:1.12rem;
+  padding:11px 15px;border-left:3px solid var(--gold);background:rgba(243,207,138,.09);border-radius:0 10px 10px 0}
+.panel .real.her{border-color:var(--rose);background:rgba(244,166,184,.09)}
+.panel .real .who{display:block;font-family:'Montserrat';font-style:normal;text-transform:uppercase;letter-spacing:.14em;font-size:.54rem;opacity:.6;margin-top:6px}
+.panel .close{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(255,255,255,.08);color:var(--ink);font-size:1rem}
+.panel .close:hover{background:rgba(255,255,255,.16)}
+.panel .step{margin-top:10px;font-family:'Montserrat';font-size:.64rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+
+/* buttons */
+.tools{position:fixed;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:6;display:flex;gap:8px}
+.tbtn{font-family:'Montserrat';font-size:.7rem;letter-spacing:.02em;padding:8px 13px;border-radius:30px;cursor:pointer;
+  color:var(--muted);background:rgba(10,8,24,.6);border:1px solid var(--glass-brd);text-decoration:none;transition:.25s;backdrop-filter:blur(6px)}
+.tbtn:hover{color:var(--ink);transform:translateY(-2px)}
+
+.hintline{position:fixed;left:50%;top:calc(50% + 40px);transform:translateX(-50%);z-index:4;pointer-events:none;
+  font-family:'Cormorant Garamond';font-style:italic;font-size:1.05rem;color:var(--muted);text-align:center;opacity:.9;
+  animation:pulse 3s ease-in-out infinite;transition:opacity .6s}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
+.hintline.gone{opacity:0}
+
+.afterdark-fab{position:fixed;left:14px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:6;display:inline-flex;align-items:center;gap:6px;
+  font-family:'Montserrat';font-size:.72rem;padding:8px 14px;border-radius:40px;text-decoration:none;color:var(--muted);
+  background:rgba(10,8,24,.55);border:1px solid var(--glass-brd);opacity:.6;transition:.3s;backdrop-filter:blur(6px)}
+.afterdark-fab:hover{opacity:1;color:var(--rose);transform:translateY(-2px)}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<canvas id="sky"></canvas>
+
+<div class="head">
+  <div class="kicker">tap every star</div>
+  <h1>Our <span class="grad">Constellation</span></h1>
+  <div class="sub">every star is a night we became more us</div>
+</div>
+
+<div class="tools">
+  <a class="tbtn" href="index.html">← home</a>
+</div>
+
+<div class="hintline" id="hintline">tap the brightest star to begin ✨</div>
+
+<div class="prog" id="prog"><span>discovered <b id="found">0</b> / <span id="total">0</span> stars</span></div>
+
+<div class="panel" id="panel">
+  <button class="close" id="pclose" aria-label="close">✕</button>
+  <div id="panelBody"></div>
+</div>
+
+<a class="afterdark-fab" href="after-dark.html" title="only for you">🌙 after dark</a>
+
+<script>
+/* ==== the memories (real dated milestones + the real lines you sent) ==== */
+const STARS=[
+  {date:"Oct 5, 2024", title:"The First Hello", x:.16, y:.30, mag:1.5,
+   text:"Before anything else, there was a single hi. Two strangers in a crowd of ninety-three thousand messages-to-be. Neither of us knew this was the start of everything."},
+  {date:"Jul 12, 2025", title:"First Meet in Chennai", x:.30, y:.52, mag:2,
+   text:"July 12, 2025. Amid the rush of Chennai Railway Station, our paths finally crossed for the very first time. One look at you, and the busy world went quiet and golden."},
+  {date:"Mar 24, 2026", title:"Our Love Began", x:.40, y:.34, mag:2.2,
+   text:"The official first day of us — the day two hearts quietly agreed to beat as one."},
+  {date:"Apr 7, 2026", title:"The First \"Luv u\"", x:.52, y:.58, mag:1.8,
+   real:"Luv u kuda solala", who:"her", side:"her",
+   text:"You let it slip before you meant to. Four small words that rearranged my whole world."},
+  {date:"Apr 8, 2026", title:"Full Trust", x:.60, y:.40, mag:1.6,
+   real:"Naa full ah trust panra unna", who:"her", side:"her",
+   text:"You handed me your whole heart and I promised — silently, seriously — to keep it safe forever."},
+  {date:"Apr 15, 2026", title:"Always For You", x:.44, y:.72, mag:1.5,
+   real:"Ne epo enna kuptalum na varuven, unakaga na irupen", who:"him", side:"him",
+   text:"The promise I'd repeat a thousand times: whenever you call, I come. For you, I stay."},
+  {date:"May 8, 2026", title:"I Said It Back", x:.70, y:.60, mag:1.9,
+   real:"Luv u 🥺🫂", who:"him", side:"him",
+   text:"My turn to say it out loud. I meant every letter then, and I still do, every single day."},
+  {date:"May 14, 2026", title:"The Unstoppable Day", x:.78, y:.38, mag:2.4,
+   text:"3,084 messages in one day. We simply could not stop — our busiest, most hopelessly-in-love day on record."},
+  {date:"Jun 1, 2026", title:"En Kanmani", x:.66, y:.24, mag:1.7,
+   real:"Una kathalecha en manasu ku savu illa de en kanmani", who:"him", side:"him",
+   text:"Loving you keeps my heart alive, my kanmani. Some lines you don't write — you just feel them and they fall out."},
+  {date:"Jun 8, 2026", title:"I Love You, Shalu", x:.84, y:.66, mag:1.8,
+   real:"I love you shalu 🫂", who:"him", side:"him",
+   text:"Plain, in English, no hiding behind cute words. Just the truest sentence I know."},
+  {date:"Jul 14, 2026", title:"101 Days & Counting", x:.88, y:.26, mag:2.0,
+   text:"A hundred and one days without a single silent gap. And somehow this still feels like only the opening line of us."},
+  {date:"Jul 25, 2026", title:"First Movie Date", x:.92, y:.48, mag:1.8,
+   text:"Watching Jananayagam together for our first movie date, side by side in the dark. My heart was racing, because your hand was right next to mine."},
+  {date:"Sep 6, 2026", title:"First Time at Her Home", x:.82, y:.72, mag:2.1,
+   text:"The first time I stepped into your world and came to your home to meet you. Seeing you in your own space, smiling back at me, my whole heart felt at peace."},
+  {date:"Sep 19, 2026", title:"First Time at My Home", x:.64, y:.82, mag:2.3,
+   text:"The very first time you came to my home. Having you walk through the door and sit beside me made my entire home feel complete."}
+];
+
+const c=document.getElementById('sky');
+const g=c.getContext('2d');
+let W,H,DPR;
+function resize(){DPR=Math.min(2,devicePixelRatio||1);W=c.width=innerWidth*DPR;H=c.height=innerHeight*DPR;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';}
+resize();addEventListener('resize',resize);
+
+/* background twinkle field */
+const field=Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:(.4+Math.random()*1.1),tw:Math.random()*6.28,sp:.4+Math.random()*1.4}));
+
+const found=new Array(STARS.length).fill(false);
+document.getElementById('total').textContent=STARS.length;
+let t=0;
+
+function starXY(s){return {x:s.x*W, y:s.y*H};}
+
+function draw(){
+  t+=.016;
+  g.clearRect(0,0,W,H);
+  // faint field
+  for(const f of field){
+    const a=.25+.35*Math.sin(t*f.sp+f.tw);
+    g.beginPath();g.arc(f.x*W,f.y*H,f.r*DPR,0,6.28);
+    g.fillStyle='rgba(255,246,224,'+Math.max(0,a*.5)+')';g.fill();
+  }
+  // constellation lines between consecutive discovered stars
+  g.lineWidth=1*DPR;
+  for(let i=1;i<STARS.length;i++){
+    if(found[i]&&found[i-1]){
+      const a=starXY(STARS[i-1]),b=starXY(STARS[i]);
+      const grad=g.createLinearGradient(a.x,a.y,b.x,b.y);
+      grad.addColorStop(0,'rgba(244,166,184,.45)');grad.addColorStop(1,'rgba(243,207,138,.45)');
+      g.strokeStyle=grad;g.beginPath();g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.stroke();
+    }
+  }
+  // stars
+  STARS.forEach((s,i)=>{
+    const {x,y}=starXY(s);
+    const base=(2.2+s.mag*1.6)*DPR;
+    const pulse=found[i]?(1+.12*Math.sin(t*2+i)):(1+.25*Math.sin(t*2.4+i));
+    const r=base*pulse;
+    const glowR=r*(found[i]?4.5:3.2);
+    const col=found[i]?'243,207,138':'255,246,224';
+    const halo=g.createRadialGradient(x,y,0,x,y,glowR);
+    halo.addColorStop(0,'rgba('+col+','+(found[i]?.55:.32)+')');
+    halo.addColorStop(1,'rgba('+col+',0)');
+    g.fillStyle=halo;g.beginPath();g.arc(x,y,glowR,0,6.28);g.fill();
+    g.beginPath();g.arc(x,y,r,0,6.28);
+    g.fillStyle='rgba('+col+',1)';g.shadowBlur=14*DPR;g.shadowColor='rgba('+col+',.9)';g.fill();g.shadowBlur=0;
+    // sparkle cross on discovered
+    if(found[i]){
+      g.strokeStyle='rgba(255,246,224,.5)';g.lineWidth=1*DPR;
+      g.beginPath();g.moveTo(x-r*2.2,y);g.lineTo(x+r*2.2,y);g.moveTo(x,y-r*2.2);g.lineTo(x,y+r*2.2);g.stroke();
+    }
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* interaction */
+const panel=document.getElementById('panel');
+const panelBody=document.getElementById('panelBody');
+const hintline=document.getElementById('hintline');
+function esc(s){return String(s).replace(/[&<>]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));}
+
+function hitTest(px,py){
+  let best=-1,bestD=1e9;
+  STARS.forEach((s,i)=>{
+    const {x,y}=starXY(s);
+    const d=Math.hypot(px*DPR-x,py*DPR-y);
+    const rad=Math.max(26*DPR,(2.2+s.mag*1.6)*DPR*4);
+    if(d<rad&&d<bestD){bestD=d;best=i;}
+  });
+  return best;
+}
+
+function openStar(i){
+  const s=STARS[i];
+  if(!found[i]){found[i]=true;updateProg();}
+  let html='<div class="date">'+esc(s.date)+'</div><h2>'+esc(s.title)+'</h2><p>'+esc(s.text)+'</p>';
+  if(s.real){
+    html+='<span class="real '+(s.side||'him')+'">"'+esc(s.real)+'"<span class="who">'+(s.who==='her'?'she said':'I said')+'</span></span>';
+  }
+  const n=found.filter(Boolean).length;
+  html+='<div class="step">star '+n+' of '+STARS.length+' — '+(n===STARS.length?'our sky is complete 💫':'keep finding the rest')+'</div>';
+  panelBody.innerHTML=html;
+  panel.classList.add('on');
+}
+function updateProg(){
+  const n=found.filter(Boolean).length;
+  document.getElementById('found').textContent=n;
+  const prog=document.getElementById('prog');
+  if(n===STARS.length){prog.classList.add('done');document.querySelector('#prog span').innerHTML='our whole sky, lit — <b>'+n+'</b> stars of us ✨';}
+}
+
+let downX,downY,moved;
+c.addEventListener('pointerdown',e=>{downX=e.clientX;downY=e.clientY;moved=false;});
+c.addEventListener('pointermove',e=>{if(Math.hypot(e.clientX-downX,e.clientY-downY)>8)moved=true;});
+c.addEventListener('pointerup',e=>{
+  if(moved)return;
+  const i=hitTest(e.clientX,e.clientY);
+  if(i>=0){hintline.classList.add('gone');openStar(i);}
+});
+document.getElementById('pclose').addEventListener('click',()=>panel.classList.remove('on'));
+addEventListener('keydown',e=>{if(e.key==='Escape')panel.classList.remove('on');});
+</script>
+</body>
+</html>
