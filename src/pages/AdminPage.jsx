@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Settings, Plus, Trash2, RotateCcw, Save, ArrowLeft, Mail, Copy,
-  Check, Eye, RefreshCw, KeyRound,
+  Check, Eye, RefreshCw, KeyRound, Send, AlertCircle
 } from 'lucide-react';
 import { DEFAULT_UNIVERSE_DATA } from '../data/universeData';
 
@@ -61,6 +61,8 @@ export default function AdminPage() {
   const [preview, setPreview] = useState('');
   const [savedAt, setSavedAt] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [testStatus, setTestStatus] = useState(null); // null | 'loading' | 'success' | 'error'
+  const [testMessage, setTestMessage] = useState('');
 
   const set = (field) => (e) => setData({ ...data, [field]: e.target.value });
   const setMailField = (field) => (e) => setMail({ ...mail, [field]: e.target.value });
@@ -115,6 +117,26 @@ export default function AdminPage() {
     } catch (e) {
       console.warn('Clipboard unavailable', e);
     }
+  };
+
+  const handleSendTestMail = async () => {
+    setTestStatus('loading');
+    setTestMessage('');
+    try {
+      const res = await fetch('/api/morning-mail?force=1');
+      const result = await res.json();
+      if (res.ok && result.sent) {
+        setTestStatus('success');
+        setTestMessage(`Success! Sent to ${result.to}`);
+      } else {
+        setTestStatus('error');
+        setTestMessage(result.error || result.reason || 'Failed to send');
+      }
+    } catch (e) {
+      setTestStatus('error');
+      setTestMessage('Error: Make sure the project is deployed to Vercel.');
+    }
+    setTimeout(() => setTestStatus(null), 5000);
   };
 
   const handleSave = () => {
@@ -293,7 +315,35 @@ export default function AdminPage() {
               {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
               {copied ? 'Copied' : 'Copy config for Vercel'}
             </button>
+            <button 
+              type="button" 
+              onClick={handleSendTestMail} 
+              disabled={testStatus === 'loading'}
+              className="admin-btn-ghost text-love-gold border-love-gold/30 hover:bg-love-gold/10"
+            >
+              {testStatus === 'loading' ? (
+                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Send className="w-3.5 h-3.5" />
+              )}
+              Send Test Mail Now
+            </button>
           </div>
+
+          {testStatus && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`p-3 rounded-xl text-xs flex items-center gap-2 ${
+                testStatus === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 
+                testStatus === 'error' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 
+                'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+              }`}
+            >
+              {testStatus === 'error' ? <AlertCircle className="w-3.5 h-3.5" /> : <Check className="w-3.5 h-3.5" />}
+              {testMessage || (testStatus === 'loading' ? 'Sending...' : '')}
+            </motion.div>
+          )}
 
           {preview && (
             <div className="p-4 rounded-2xl bg-black/30 border border-white/10">
