@@ -14,7 +14,7 @@ const DEFAULT_MAIL_CONFIG = {
   recipientName: '',
   senderName: '',
   subjectTemplate: 'Good morning, {name} 🌸',
-  sendHourIST: 6,
+  sendTimeIST: '06:30',
   includeCompliments: true,
   includeLoveLetters: true,
   includeMemoryQuotes: false,
@@ -94,7 +94,7 @@ export default function AdminPage() {
     recipientName: mail.recipientName || data.girlfriendName,
     senderName: mail.senderName || data.boyfriendName,
     subjectTemplate: mail.subjectTemplate,
-    sendHourIST: Number(mail.sendHourIST),
+    sendTimeIST: mail.sendTimeIST || '06:30',
     includeCompliments: !!mail.includeCompliments,
     includeLoveLetters: !!mail.includeLoveLetters,
     includeMemoryQuotes: !!mail.includeMemoryQuotes,
@@ -272,18 +272,13 @@ export default function AdminPage() {
 
           <div>
             <label className="admin-label">Send time (IST)</label>
-            <select
-              value={mail.sendHourIST}
-              onChange={setMailField('sendHourIST')}
+            <input
+              type="time"
+              value={mail.sendTimeIST || '06:30'}
+              onChange={setMailField('sendTimeIST')}
               className="admin-input"
-            >
-              {[4, 5, 6, 7, 8, 9, 10].map((h) => (
-                <option key={h} value={h} className="bg-love-dark">
-                  {h}:30 AM
-                </option>
-              ))}
-            </select>
-            <span className="admin-hint">Delivered at :30 past the chosen hour.</span>
+            />
+            <span className="admin-hint">Choose any custom time. Remember to update your Vercel Cron schedule if needed.</span>
           </div>
 
           <div>

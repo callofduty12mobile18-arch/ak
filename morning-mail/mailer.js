@@ -16,7 +16,7 @@ export const DEFAULT_CONFIG = {
   recipientName: '',
   senderName: '',
   subjectTemplate: 'Good morning, {name} 🌸',
-  sendHourIST: 6,
+  sendTimeIST: '06:30',
   includeCompliments: true,
   includeLoveLetters: true,
   includeMemoryQuotes: false,
@@ -30,7 +30,7 @@ export function resolveConfig(raw = {}) {
     recipientEmail: cfg.recipientEmail || DEFAULT_UNIVERSE_DATA.adminEmail,
     recipientName: cfg.recipientName || DEFAULT_UNIVERSE_DATA.girlfriendName,
     senderName: cfg.senderName || DEFAULT_UNIVERSE_DATA.boyfriendName,
-    sendHourIST: Number(cfg.sendHourIST),
+    sendTimeIST: cfg.sendTimeIST || '06:30',
     includeCompliments: !!cfg.includeCompliments,
     includeLoveLetters: !!cfg.includeLoveLetters,
     includeMemoryQuotes: !!cfg.includeMemoryQuotes,
@@ -132,11 +132,14 @@ async function sendViaGmail({ subject, html, text, to, user, pass, senderName })
 export async function runMorningMail({ env = process.env, force = false, dryRun = false } = {}) {
   const cfg = resolveConfig(parseConfigEnv(env));
   const ist = istNow();
+  const hh = String(ist.getUTCHours()).padStart(2, '0');
+  const mm = String(ist.getUTCMinutes()).padStart(2, '0');
+  const currentIST = `${hh}:${mm}`;
 
-  if (!force && ist.getUTCHours() !== cfg.sendHourIST) {
+  if (!force && currentIST !== cfg.sendTimeIST) {
     return {
       sent: false,
-      reason: `Not the send hour (IST ${ist.getUTCHours()}h, target ${cfg.sendHourIST}h).`,
+      reason: `Not the send time (IST ${currentIST}, target ${cfg.sendTimeIST}).`,
     };
   }
 
