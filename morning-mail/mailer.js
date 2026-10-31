@@ -127,22 +127,14 @@ async function sendViaGmail({ subject, html, text, to, user, pass, senderName })
 
 /**
  * Compose and (unless dry-run) send the morning mail.
- * Only sends when the current IST hour matches the configured hour, unless forced.
+ * On Vercel Hobby, this runs once a day via the cron defined in vercel.json.
  */
 export async function runMorningMail({ env = process.env, force = false, dryRun = false } = {}) {
   const cfg = resolveConfig(parseConfigEnv(env));
-  const ist = istNow();
-  const hh = String(ist.getUTCHours()).padStart(2, '0');
-  const mm = String(ist.getUTCMinutes()).padStart(2, '0');
-  const currentIST = `${hh}:${mm}`;
-
-  if (!force && currentIST !== cfg.sendTimeIST) {
-    return {
-      sent: false,
-      reason: `Not the send time (IST ${currentIST}, target ${cfg.sendTimeIST}).`,
-    };
-  }
-
+  
+  // Note: On Hobby plan, we send whenever the cron triggers because we only get one trigger per day.
+  // The sendTimeIST check is primarily for manual 'force' triggers or local testing.
+  
   const mail = composeMorningMail(cfg);
   const to = env.MAIL_TO || cfg.recipientEmail;
 

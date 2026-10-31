@@ -278,7 +278,11 @@ export default function AdminPage() {
               onChange={setMailField('sendTimeIST')}
               className="admin-input"
             />
-            <span className="admin-hint">Choose any custom time. Remember to update your Vercel Cron schedule if needed.</span>
+            <div className="mt-2 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[11px] text-blue-400 leading-relaxed">
+              <strong>Hobby Plan Note:</strong> Vercel only allows 1 mail per day. 
+              The mail will arrive at the time set in your code's <code>vercel.json</code>. 
+              To change it permanently, update the cron schedule in your GitHub repository.
+            </div>
           </div>
 
           <div>
