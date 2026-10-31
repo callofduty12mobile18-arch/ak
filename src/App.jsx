@@ -220,6 +220,14 @@ export default function App() {
           <p className="type-label text-love-faint">
             July 12, 2025 — to infinity &amp; beyond
           </p>
+          <a
+            href="https://shaluswonderland.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-love-gold/60 hover:text-love-gold transition-colors underline decoration-love-gold/30"
+          >
+            shaluswonderland.vercel.app
+          </a>
         </div>
       </footer>
 

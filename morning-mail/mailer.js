@@ -80,6 +80,9 @@ function renderEmail({ quote, name, sender, dateLabel }) {
         <p style="margin:22px 0 0;color:rgba(251,238,233,0.5);font-size:13px;font-family:Arial,sans-serif;">&mdash; ${safe(sender)}</p>
       </div>
       <div style="padding:16px 32px;border-top:1px solid rgba(255,255,255,0.08);color:rgba(251,238,233,0.35);font-size:11px;font-family:Arial,sans-serif;">
+        <div style="margin-bottom:8px;">
+          <a href="https://shaluswonderland.vercel.app/" style="color:#e8c16a;text-decoration:none;">Visit Shalini's Wonderland</a>
+        </div>
         ${safe(dateLabel)} &middot; sent with love
       </div>
     </div>
@@ -105,7 +108,7 @@ export function composeMorningMail(cfg) {
     quote,
     subject,
     html: renderEmail({ quote, name: cfg.recipientName, sender: cfg.senderName, dateLabel }),
-    text: `Good morning, ${cfg.recipientName}\n\n"${quote}"\n\n— ${cfg.senderName}\n${dateLabel}`,
+    text: `Good morning, ${cfg.recipientName}\n\n"${quote}"\n\n— ${cfg.senderName}\n${dateLabel}\n\nVisit your wonderland: https://shaluswonderland.vercel.app/`,
   };
 }
 
