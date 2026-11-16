@@ -18,4 +18,4 @@
 
 ## Implementation
 
-`MultilingualHeartSplash` renders a device-pixel-ratio-aware canvas. It assigns repeated phrases from a 20-language pool across heart scanlines, eases each phrase vertically into its final position, then applies intermittent shimmer highlights. At the end of the configured duration, the overlay fades out and calls `onComplete`, exposing the existing application beneath it.
+`MultilingualHeartSplash` renders a device-pixel-ratio-aware canvas. It traces two measured typographic rings along a parametric heart curve, spacing each phrase by its rendered width and aligning it to the curve’s tangent. The phrases ease vertically into place, then receive intermittent shimmer highlights. At the end of the configured duration, the overlay fades out and calls `onComplete`, exposing the existing application beneath it.
