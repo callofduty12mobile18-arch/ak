@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Music, VolumeX, Moon, Menu, X, Heart, Gift, Sparkles } from 'lucide-react';
+import { Music, VolumeX, Menu, X, Heart, Gift, Sparkles } from 'lucide-react';
 import { useAudio } from '../context/AudioContext';
 
 const NAV_ITEMS = [
@@ -17,7 +17,6 @@ const NAV_ITEMS = [
 export default function Navbar({
   activeSection,
   setActiveSection,
-  onOpenAfterDark,
   onOpenHeartbeat,
   onOpenGiftBox,
   onOpenAnniversary,
@@ -116,11 +115,6 @@ export default function Navbar({
                 </ActionButton>
               )}
 
-              {/* After Dark */}
-              <ActionButton onClick={onOpenAfterDark} label="After dark">
-                <Moon className="w-3.5 h-3.5" aria-hidden />
-              </ActionButton>
-
               {/* Mobile hamburger */}
               <button
                 className="md:hidden p-2 rounded text-love-muted hover:text-love-ink transition-colors"
@@ -207,9 +201,6 @@ export default function Navbar({
                     <Sparkles className="w-3.5 h-3.5 text-love-rose" />
                   </ActionButton>
                 )}
-                <ActionButton onClick={onOpenAfterDark} label="After dark">
-                  <Moon className="w-3.5 h-3.5" />
-                </ActionButton>
               </div>
             </motion.nav>
           </motion.div>

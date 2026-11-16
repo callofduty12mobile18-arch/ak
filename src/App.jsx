@@ -19,7 +19,6 @@ import ScrapbookView from './components/ScrapbookView';
 // Modals
 import OpenWhenModal from './components/OpenWhenModal';
 import VirtualHugModal from './components/VirtualHugModal';
-import AfterDarkModal from './components/AfterDarkModal';
 import HeartbeatSyncModal from './components/HeartbeatSyncModal';
 import SurpriseGiftBoxModal from './components/SurpriseGiftBoxModal';
 import AnniversaryModal from './components/AnniversaryModal';
@@ -46,7 +45,6 @@ export default function App() {
   const { setSongId } = useAudio();
 
   // Modal States
-  const [isAfterDarkOpen, setIsAfterDarkOpen] = useState(false);
   const [isOpenWhenOpen, setIsOpenWhenOpen] = useState(false);
   const [isHugOpen, setIsHugOpen] = useState(false);
   const [isHeartbeatOpen, setIsHeartbeatOpen] = useState(false);
@@ -74,7 +72,6 @@ export default function App() {
       <Navbar
         activeSection={activeSection}
         setActiveSection={setActiveSection}
-        onOpenAfterDark={() => setIsAfterDarkOpen(true)}
         onOpenHeartbeat={() => setIsHeartbeatOpen(true)}
         onOpenGiftBox={() => setIsGiftBoxOpen(true)}
         onOpenAnniversary={() => setIsAnniversaryOpen(true)}
@@ -264,11 +261,6 @@ export default function App() {
         boyfriendName={universeData.boyfriendName}
       />
 
-      <AfterDarkModal
-        isOpen={isAfterDarkOpen}
-        onClose={() => setIsAfterDarkOpen(false)}
-        secretWord={universeData.afterDarkSecret}
-      />
     </div>
   );
 }

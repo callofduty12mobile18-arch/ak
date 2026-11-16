@@ -7,7 +7,6 @@ export const DEFAULT_UNIVERSE_DATA = {
   youtubeSongId: "T6Td7uJ8rRI",
   anniversaryDate: "2026-03-24T18:00",
   adminEmail: "polonium84r@gmail.com",
-  afterDarkSecret: "thangam",
 
   milestones: [
     {
@@ -505,26 +504,5 @@ export const DEFAULT_UNIVERSE_DATA = {
     "September gave us two of our most unforgettable days. On September 6, coming to your home and meeting you in your own world made my heart so full. And on September 19, when you walked into my home for the very first time, having you in my space made my entire universe feel complete.",
     "Knowing you love me is the single greatest gift I have ever received. It makes me stand taller, love deeper, and face the world with a heart full of peace.",
     "This is my promise for all our tomorrows: I will love you, protect you, and cherish you with every single beat of my heart. Forever and always, Yours, Polonium."
-  ],
-
-  afterDarkWhispers: [
-    { w: "him", t: "Un tight ha hug pannitu… Shalu, raining ha iruku, fan potu iruku… bedsheet ulla vareya nu" },
-    { w: "her", t: "Kiss pannuva… 🫂" },
-    { w: "her", t: "Hug pannuva…" },
-    { w: "him", t: "Una paduka vechitu, un mela na forehead la kiss pannitu…" },
-    { w: "him", t: "Unaku lip la kiss pannuven" },
-    { w: "him", t: "Un neck la kiss panna…" },
-    { w: "him", t: "Un kanathu la kiss pannitu" },
-    { w: "her", t: "Apdiyae gap la kiss kudukura… paathiya nee" },
-    { w: "him", t: "En kuda kojam nearm, kana mude, thuguga" },
-    { w: "him", t: "Nanum un kuda ey thuguven" },
-    { w: "him", t: "Unaku ethana mathri pannuven soft ha" },
-    { w: "him", t: "Na tha rasipa ne — dress oda iruthalum, nude ha iruthalum" },
-    { w: "him", t: "Enaku un kuda romantic ha pesitey. Una kiss pannitey. Un dress ha soft ha touch pannitu… una um ennaum satisfy pannuven" },
-    { w: "her", t: "Serii… apro naanadhey pannikren 🫣" },
-    { w: "him", t: "Una temp panni, pleasure kuduthu tha…" },
-    { w: "her", t: "Nee ready pannuva la… wet la pannuva" },
-    { w: "him", t: "Un neju mela paduthu ka… na unaku proumai ha irupa" },
-    { w: "him", t: "Aprm normal agetu, un kuda ey thugeduven 😌" }
   ]
 };

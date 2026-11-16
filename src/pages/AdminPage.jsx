@@ -224,11 +224,6 @@ export default function AdminPage() {
             onChange={set('adminEmail')}
             hint="Wishes released on the Starry Board are emailed here."
           />
-          <Field
-            label="After-dark secret word"
-            value={data.afterDarkSecret}
-            onChange={set('afterDarkSecret')}
-          />
         </Section>
 
         {/* ── Good morning mail ───────────────────────────────────── */}
