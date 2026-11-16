@@ -29,43 +29,47 @@ function buildHeartBoundary(width, height) {
   return rawPoints.map((point) => ({ x: centerX + point.x * scale, y: centerY + point.y * scale }));
 }
 
+function scanlineIntervals(boundary, y) {
+  const intersections = [];
+  for (let index = 0; index < boundary.length - 1; index += 1) {
+    const start = boundary[index];
+    const end = boundary[index + 1];
+    if ((start.y <= y && end.y > y) || (end.y <= y && start.y > y)) {
+      intersections.push(start.x + ((y - start.y) * (end.x - start.x)) / (end.y - start.y));
+    }
+  }
+  intersections.sort((left, right) => left - right);
+  return Array.from({ length: Math.floor(intersections.length / 2) }, (_, index) => [intersections[index * 2], intersections[index * 2 + 1]]);
+}
+
 function buildPhrases(context, width, height) {
   const boundary = buildHeartBoundary(width, height);
-  const centerX = width / 2;
-  const centerY = height * 0.47;
+  const top = Math.min(...boundary.map((point) => point.y));
+  const bottom = Math.max(...boundary.map((point) => point.y));
+  const rows = 31;
+  const baseFontSize = clamp(Math.min(width, height) * 0.016, 10, 15);
   const phrases = [];
   let phraseIndex = 0;
 
-  [
-    { ratio: 1, fontSize: clamp(Math.min(width, height) * 0.018, 11, 16), gap: 18 },
-    { ratio: 0.77, fontSize: clamp(Math.min(width, height) * 0.014, 9, 13), gap: 14 },
-  ].forEach(({ ratio, fontSize, gap }) => {
-    const ring = boundary.map((point) => ({
-      x: centerX + (point.x - centerX) * ratio,
-      y: centerY + (point.y - centerY) * ratio,
-    }));
-    context.font = `${fontSize}px "Cormorant Garamond", Georgia, serif`;
-    let travelled = 0;
-
-    for (let index = 1; index < ring.length; index += 1) {
-      const previous = ring[index - 1];
-      const point = ring[index];
-      travelled += Math.hypot(point.x - previous.x, point.y - previous.y);
+  for (let row = 0; row < rows; row += 1) {
+    const y = top + ((row + 0.5) / rows) * (bottom - top);
+    scanlineIntervals(boundary, y).forEach(([left, right]) => {
+      let x = left + 4;
+      while (x < right - 4) {
       const text = LOVE_PHRASES[phraseIndex % LOVE_PHRASES.length];
-      const requiredSpace = context.measureText(text).width + gap;
-      if (travelled < requiredSpace) continue;
-
-      const next = ring[(index + 2) % ring.length];
-      let angle = Math.atan2(next.y - previous.y, next.x - previous.x);
-      if (angle > Math.PI / 2 || angle < -Math.PI / 2) angle += Math.PI;
-      phrases.push({
-        text, x: point.x, y: point.y, angle, delay: phrases.length * 0.026,
-        seed: (phraseIndex * 0.618) % 1, fontSize,
-      });
-      phraseIndex += 1;
-      travelled = 0;
-    }
-  });
+        context.font = `${baseFontSize}px "Cormorant Garamond", Georgia, serif`;
+        const fullWidth = context.measureText(text).width;
+        const available = right - x - 4;
+        const fontSize = clamp(baseFontSize * Math.min(1, available / (fullWidth + 7)), 7, baseFontSize);
+        context.font = `${fontSize}px "Cormorant Garamond", Georgia, serif`;
+        const textWidth = context.measureText(text).width;
+        if (textWidth > available || fontSize < 7.1) break;
+        phrases.push({ text, x: x + textWidth / 2, y, delay: row * 0.025 + phrases.length * 0.006, seed: (phraseIndex * 0.618) % 1, fontSize });
+        x += textWidth + 7;
+        phraseIndex += 1;
+      }
+    });
+  }
   return phrases;
 }
 
@@ -128,9 +132,7 @@ export default function MultilingualHeartSplash({ duration = 9000, onComplete })
         context.shadowBlur = shimmer ? 17 : 6;
         context.shadowColor = shimmer ? '#f8db87' : '#d4778d';
         context.fillStyle = shimmer ? '#f8db87' : `hsl(${338 + phrase.seed * 22} 68% ${60 + phrase.seed * 18}%)`;
-        context.translate(phrase.x, verticalStart + (phrase.y - verticalStart) * entered + float);
-        context.rotate(phrase.angle);
-        context.fillText(phrase.text, 0, 0);
+        context.fillText(phrase.text, phrase.x, verticalStart + (phrase.y - verticalStart) * entered + float);
         context.restore();
       });
 
