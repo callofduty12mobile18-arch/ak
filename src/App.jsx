@@ -22,9 +22,11 @@ import VirtualHugModal from './components/VirtualHugModal';
 import HeartbeatSyncModal from './components/HeartbeatSyncModal';
 import SurpriseGiftBoxModal from './components/SurpriseGiftBoxModal';
 import AnniversaryModal from './components/AnniversaryModal';
+import MultilingualHeartSplash from './components/MultilingualHeartSplash';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('us');
+  const [isSplashComplete, setIsSplashComplete] = useState(false);
   const [universeData] = useState(() => {
     try {
       const saved = localStorage.getItem('universe_data');
@@ -65,6 +67,9 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen text-love-ink selection:bg-love-rose selection:text-white flex flex-col font-sans">
+      {!isSplashComplete && (
+        <MultilingualHeartSplash duration={9000} onComplete={() => setIsSplashComplete(true)} />
+      )}
       {/* Dynamic Cherry Blossom & Golden Embers Background */}
       <ParticleBackground />
 
