@@ -23,10 +23,11 @@ function buildHeartBoundary(width, height) {
     minX: Math.min(result.minX, point.x), maxX: Math.max(result.maxX, point.x),
     minY: Math.min(result.minY, point.y), maxY: Math.max(result.maxY, point.y),
   }), { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity });
-  const scale = Math.min((width * 0.56) / (bounds.maxX - bounds.minX), (height * 0.67) / (bounds.maxY - bounds.minY));
+  const scaleX = (width * 0.46) / (bounds.maxX - bounds.minX);
+  const scaleY = (height * 0.7) / (bounds.maxY - bounds.minY);
   const centerX = width / 2;
-  const centerY = height * 0.47;
-  return rawPoints.map((point) => ({ x: centerX + point.x * scale, y: centerY + point.y * scale }));
+  const centerY = height * 0.46;
+  return rawPoints.map((point) => ({ x: centerX + point.x * scaleX, y: centerY + point.y * scaleY }));
 }
 
 function scanlineIntervals(boundary, y) {
@@ -46,8 +47,10 @@ function buildPhrases(context, width, height) {
   const boundary = buildHeartBoundary(width, height);
   const top = Math.min(...boundary.map((point) => point.y));
   const bottom = Math.max(...boundary.map((point) => point.y));
-  const rows = 31;
-  const baseFontSize = clamp(Math.min(width, height) * 0.016, 10, 15);
+  const rows = 39;
+  const baseFontSize = clamp(Math.min(width, height) * 0.013, 10, 12);
+  const minFontSize = 4.8;
+  const gap = 5;
   const phrases = [];
   let phraseIndex = 0;
 
@@ -60,12 +63,19 @@ function buildPhrases(context, width, height) {
         context.font = `${baseFontSize}px "Cormorant Garamond", Georgia, serif`;
         const fullWidth = context.measureText(text).width;
         const available = right - x - 4;
-        const fontSize = clamp(baseFontSize * Math.min(1, available / (fullWidth + 7)), 7, baseFontSize);
+        const fontSize = clamp(baseFontSize * Math.min(1, available / (fullWidth + gap)), minFontSize, baseFontSize);
         context.font = `${fontSize}px "Cormorant Garamond", Georgia, serif`;
         const textWidth = context.measureText(text).width;
-        if (textWidth > available || fontSize < 7.1) break;
-        phrases.push({ text, x: x + textWidth / 2, y, delay: row * 0.025 + phrases.length * 0.006, seed: (phraseIndex * 0.618) % 1, fontSize });
-        x += textWidth + 7;
+        if (textWidth > available) break;
+        phrases.push({
+          text,
+          x: x + textWidth / 2,
+          y,
+          delay: row * 0.011 + ((x - left) / Math.max(right - left, 1)) * 0.05,
+          seed: (phraseIndex * 0.618) % 1,
+          fontSize,
+        });
+        x += textWidth + gap;
         phraseIndex += 1;
       }
     });
@@ -129,7 +139,7 @@ export default function MultilingualHeartSplash({ duration = 9000, onComplete })
         context.font = `${fontSize}px "Cormorant Garamond", Georgia, serif`;
         context.textAlign = 'center';
         context.textBaseline = 'middle';
-        context.shadowBlur = shimmer ? 17 : 6;
+        context.shadowBlur = shimmer ? 15 : 3;
         context.shadowColor = shimmer ? '#f8db87' : '#d4778d';
         context.fillStyle = shimmer ? '#f8db87' : `hsl(${338 + phrase.seed * 22} 68% ${60 + phrase.seed * 18}%)`;
         context.fillText(phrase.text, phrase.x, verticalStart + (phrase.y - verticalStart) * entered + float);
