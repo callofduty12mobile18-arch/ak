@@ -10,48 +10,63 @@ const LOVE_PHRASES = [
 const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
-function heartWidthAt(y) {
-  const insideHeart = (x) => {
-    const radius = x * x + y * y - 1;
-    return radius * radius * radius - x * x * y * y * y <= 0;
+function heartPoint(angle) {
+  return {
+    x: 16 * Math.pow(Math.sin(angle), 3),
+    y: -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle)),
   };
-
-  let low = 0;
-  let high = 1.5;
-  for (let step = 0; step < 24; step += 1) {
-    const middle = (low + high) / 2;
-    if (insideHeart(middle)) low = middle;
-    else high = middle;
-  }
-  return low;
 }
 
-function buildPhrases(width, height) {
-  const rows = 22;
-  const scale = Math.min(width / 3.25, height / 3.2);
+function buildHeartBoundary(width, height) {
+  const rawPoints = Array.from({ length: 721 }, (_, index) => heartPoint((index / 720) * Math.PI * 2));
+  const bounds = rawPoints.reduce((result, point) => ({
+    minX: Math.min(result.minX, point.x), maxX: Math.max(result.maxX, point.x),
+    minY: Math.min(result.minY, point.y), maxY: Math.max(result.maxY, point.y),
+  }), { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity });
+  const scale = Math.min((width * 0.56) / (bounds.maxX - bounds.minX), (height * 0.67) / (bounds.maxY - bounds.minY));
   const centerX = width / 2;
-  const centerY = height * 0.51;
+  const centerY = height * 0.47;
+  return rawPoints.map((point) => ({ x: centerX + point.x * scale, y: centerY + point.y * scale }));
+}
+
+function scanlineIntervals(boundary, y) {
+  const intersections = [];
+  for (let index = 0; index < boundary.length - 1; index += 1) {
+    const start = boundary[index];
+    const end = boundary[index + 1];
+    if ((start.y <= y && end.y > y) || (end.y <= y && start.y > y)) {
+      intersections.push(start.x + ((y - start.y) * (end.x - start.x)) / (end.y - start.y));
+    }
+  }
+  intersections.sort((left, right) => left - right);
+  return Array.from({ length: Math.floor(intersections.length / 2) }, (_, index) => [intersections[index * 2], intersections[index * 2 + 1]]);
+}
+
+function buildPhrases(context, width, height) {
+  const boundary = buildHeartBoundary(width, height);
+  const top = Math.min(...boundary.map((point) => point.y));
+  const bottom = Math.max(...boundary.map((point) => point.y));
+  const rows = 19;
+  const fontSize = clamp(Math.min(width, height) * 0.016, 11, 15);
   const phrases = [];
   let phraseIndex = 0;
+  context.font = `${fontSize}px "Cormorant Garamond", Georgia, serif`;
 
   for (let row = 0; row < rows; row += 1) {
-    const normalizedY = 1.16 - (row / (rows - 1)) * 2.22;
-    const widthAtRow = heartWidthAt(normalizedY);
-    if (widthAtRow < 0.04) continue;
-
-    const count = Math.max(1, Math.floor(widthAtRow * 5.7));
-    for (let column = 0; column < count; column += 1) {
-      const ratio = count === 1 ? 0.5 : column / (count - 1);
-      const normalizedX = -widthAtRow + ratio * widthAtRow * 2;
-      phrases.push({
-        text: LOVE_PHRASES[phraseIndex % LOVE_PHRASES.length],
-        x: centerX + normalizedX * scale,
-        y: centerY - normalizedY * scale,
-        delay: (row * 0.035) + (column * 0.018),
-        scale: clamp(0.58 + widthAtRow * 0.31, 0.6, 0.92),
-        seed: (phraseIndex * 0.618) % 1,
-      });
-      phraseIndex += 1;
+    const y = top + ((row + 0.5) / rows) * (bottom - top);
+    scanlineIntervals(boundary, y).forEach(([left, right]) => {
+      let x = left + 12;
+      while (x < right - 12) {
+        const text = LOVE_PHRASES[phraseIndex % LOVE_PHRASES.length];
+        const textWidth = context.measureText(text).width;
+        if (x + textWidth > right - 8) break;
+        phrases.push({ text, x: x + textWidth / 2, y, delay: row * 0.04 + phrases.length * 0.008, seed: (phraseIndex * 0.618) % 1, fontSize });
+        x += textWidth + 16;
+        phraseIndex += 1;
+      }
+    });
+    if (phrases.length === 0 && row === 0) {
+      phrases.push({ text: LOVE_PHRASES[0], x: width / 2, y, delay: 0, seed: 0, fontSize });
     }
   }
   return phrases;
@@ -79,7 +94,7 @@ export default function MultilingualHeartSplash({ duration = 9000, onComplete })
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      phrases = buildPhrases(window.innerWidth, window.innerHeight);
+      phrases = buildPhrases(context, window.innerWidth, window.innerHeight);
       startTime = performance.now();
     };
 
@@ -105,7 +120,7 @@ export default function MultilingualHeartSplash({ duration = 9000, onComplete })
         const entered = easeOutCubic(localProgress);
         const float = Math.sin((elapsed / 1200) + phrase.seed * 8) * 2.2;
         const shimmer = progress >= 1 && Math.sin(shimmerPhase * 2.3 + phrase.seed * 19) > 0.92;
-        const fontSize = Math.max(10, Math.min(width, height) * 0.025 * phrase.scale);
+        const fontSize = phrase.fontSize;
         const verticalStart = height * 0.18;
 
         context.save();
